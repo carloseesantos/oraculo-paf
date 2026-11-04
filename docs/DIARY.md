@@ -356,6 +356,62 @@ Próximo passo:
 
 ---
 
+## 2026-08-25 — Execução do QA Agent
+
+Objetivo:
+Revisar as histórias Must do backlog atualizado e transformar critérios de aceite em cenários testáveis + checklist de QA.
+
+Saída gerada:
+
+- `docs/QA_CHECKLIST.md`
+
+Resumo da saída:
+
+O QA Agent concluiu que o backlog Must é testável para teste interno manual em Android real, com lacunas principais em critérios subjetivos de UX/conteúdo e na persistência (US-09 Must) sem UI de histórico (US-10 Should).
+
+Cobertura Must: US-01, US-02, US-04, US-05, US-06, US-07, US-09, US-12, US-13.
+
+Incluiu: cenários positivos/negativos/edge, riscos de qualidade, heurísticas operacionais para critérios ambíguos, checklist go/no-go e recomendações de ajuste de aceite ao PO (sem ampliar escopo).
+
+Decisão tomada:
+
+`docs/QA_CHECKLIST.md` passa a ser o checklist oficial mínimo para validar build interna (US-13). Should/Could não bloqueiam go/no-go. Share em Android real permanece prioridade #1 de teste.
+
+Próximo passo:
+
+1. PO revisar ajustes sugeridos de critérios (seção 8 do QA_CHECKLIST).
+2. Storyteller Agent gerar JSON inicial (US-05).
+3. PMO detalhar tarefas de implementação.
+4. Não iniciar Frontend sem alinhar evidência mínima de US-09 (storage/debug ou US-10).
+
+---
+
+## 2026-08-27 — Execução do Software Architect Agent
+
+Objetivo:
+Mapear histórias Must e tarefas de `docs/TASKS.md` para estrutura técnica inicial (`docs/IMPLEMENTATION_MAP.md`).
+
+Saída gerada:
+
+- `docs/IMPLEMENTATION_MAP.md`
+
+Resumo da saída:
+
+Mapa User Story → componentes/screens/services/hooks/types/arquivos; Task → arquivos; cadeia técnica JSON → consulta → card → share → histórico → build; riscos por US ligados a `RISKS.md` e QA; instruções objetivas para o Frontend Mobile Agent; lista de ajustes recomendados em docs (sem alteração automática).
+
+Decisão tomada:
+
+Projeto pronto para scaffold Frontend. Sem bloqueio técnico de arquitetura. `HistoryScreen` fora do Must inicial. Share em Android permanece spike precoce. Primeira tarefa de código: scaffold Expo + `messagesService`.
+
+Próximo passo:
+
+1. Storyteller: `messages.json` (≥5 por tom).
+2. Frontend: scaffold + cadeia Must.
+3. UX: composição mínima Home/card em paralelo.
+4. PMO/QA: fechar evidência US-09.
+
+---
+
 # Status atual da jornada
 
 ✅ Problema definido
@@ -369,4 +425,6 @@ Próximo passo:
 ✅ Decisões registradas
 ✅ Riscos iniciais registrados
 ✅ Arquitetura inicial do MVP (`docs/ARCHITECTURE.md`)
-⏳ Próximo passo: criar ADRs iniciais e preparar UX/UI Agent + Storyteller Agent
+✅ Checklist de QA Must (`docs/QA_CHECKLIST.md`)
+✅ Mapa de implementação (`docs/IMPLEMENTATION_MAP.md`)
+⏳ Próximo passo: Storyteller (JSON) + UX mínima em paralelo; Frontend inicia scaffold Expo

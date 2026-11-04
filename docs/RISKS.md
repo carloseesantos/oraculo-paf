@@ -393,7 +393,13 @@ Software Architect Agent + PMO Agent.
 
 ## Status
 
-Ativo.
+Mitigado parcialmente.
+
+## Observação
+
+O risco foi reduzido com a criação de `ARCHITECTURE.md`, ADRs, `TASKS.md` e `IMPLEMENTATION_MAP.md`.
+
+Ainda será encerrado totalmente após o scaffold seguir a estrutura proposta e não iniciar implementação fora da cadeia Must.
 
 ---
 

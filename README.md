@@ -1,338 +1,191 @@
 # ORÁCULO PAF
 
-Repositório de desenvolvimento do **ORÁCULO PAF**, um micro-app mobile de experiência rápida, emocional e compartilhável.
+Repositório do **ORÁCULO PAF**, um micro-app mobile de experiência rápida, emocional e compartilhável.
 
-O projeto faz parte da série **“Do Zero ao Produto”**, publicada na newsletter **Papo de Gerente**, com o objetivo de documentar a construção real de um produto usando IA como apoio em etapas de gestão, produto, arquitetura, backlog, desenvolvimento, QA e publicação.
+Este projeto faz parte da série **Do Zero ao Produto**, da newsletter **Papo de Gerente**. A série documenta a construção real de um produto com apoio de agentes de IA na gestão, produto, arquitetura, desenvolvimento, QA e aprendizado. Documentação, implementação e validação são etapas diferentes: nenhuma funcionalidade é considerada pronta apenas porque foi planejada.
 
 ---
 
-## Visão do produto
+## Visão do produto e hipótese do MVP
 
-O ORÁCULO PAF é um app mobile simples:
-
-> O usuário abre o app, toca em um botão e recebe uma mensagem poética, mística ou humorística, visualmente bonita e com potencial de compartilhamento.
-
-A experiência principal deve ser:
+O usuário abre o aplicativo, toca em **Consultar**, recebe uma mensagem poética, mística ou humorística, visualiza um card e pode compartilhá-lo.
 
 ```text
-Abrir app → Consultar → Ver card → Compartilhar
-                         ↓
-              Histórico local simples
-                         ↓
-              Validar hipótese principal
+Abrir app → Consultar → Mensagem → Card → Compartilhar
+                              ↓
+                    Persistir histórico local
 ```
 
----
+**Hipótese principal:** usuários irão se identificar com mensagens rápidas, poéticas, místicas ou humorísticas a ponto de querer compartilhar o card gerado.
 
-## Hipótese principal do MVP
-
-O MVP existe para validar a seguinte hipótese:
-
-> Usuários irão se identificar com mensagens rápidas, poéticas, místicas ou humorísticas a ponto de querer compartilhar o card gerado em redes sociais ou aplicativos de mensagem.
-
-O objetivo inicial não é construir uma plataforma completa.
-
-O objetivo é validar uma experiência simples, de baixo atrito, com potencial emocional e compartilhável.
+O MVP busca testar a experiência central com o menor atrito possível, e não criar uma plataforma completa.
 
 ---
 
-## Escopo do MVP
+## Escopo e prioridades
 
-O MVP deverá conter:
+### Must
 
-* tela principal;
-* botão de consulta;
-* seleção aleatória de mensagem;
-* mensagens em JSON local;
-* card visual para exibição da mensagem;
-* compartilhamento do card;
-* histórico local limitado às últimas 10 mensagens;
-* identidade visual mínima e consistente;
-* build interna para teste em dispositivo real.
+- US-01 — Tela principal clara.
+- US-02 — Consultar mensagem aleatória.
+- US-04 — JSON local com tons.
+- US-05 — Mensagens curtas, legíveis e compartilháveis.
+- US-06 — Card visual da mensagem.
+- US-07 — Compartilhar o card (imagem preferencial; fallback em texto).
+- US-09 — Persistir últimas 10 consultas localmente.
+- US-12 — Identidade visual mínima e consistente.
+- US-13 — Build interna para teste.
 
----
+### Should / Could
 
-## Fora do escopo do MVP
+- **Should:** US-03 (evitar repetição consecutiva), US-10 (visualizar histórico), US-11 (compartilhar a partir do histórico, somente se reutilizar o fluxo existente).
+- **Could:** US-08 (microinteração ao consultar).
 
-Os itens abaixo **não fazem parte da primeira versão**:
+**Regra de escopo:** US-09 é Must; US-10 não é. A persistência pode ser comprovada tecnicamente sem criar uma tela de histórico.
 
-* login;
-* cadastro;
-* perfil de usuário;
-* backend;
-* Supabase;
-* banco de dados remoto;
-* sincronização em nuvem;
-* IA generativa em tempo real dentro do app;
-* ranking;
-* comentários;
-* curtidas;
-* seguidores;
-* rede social;
-* notificações push;
-* monetização;
-* analytics avançado;
-* gamificação pesada;
-* personalização avançada.
+### Fora do MVP
 
-Esses itens podem ser avaliados futuramente, mas não devem interferir na validação inicial do MVP.
+Login, cadastro, perfil de usuário, backend, Supabase, sincronização em nuvem, IA generativa em runtime, ranking, comentários, curtidas, seguidores, rede social, notificações push, monetização, analytics avançado, gamificação pesada e personalização avançada.
+
+Nenhum item fora do escopo deve entrar sem decisão explícita.
 
 ---
 
-## Stack planejada
+## Stack e arquitetura aprovadas
 
-Stack inicial definida para o MVP:
+- **Expo + React Native + TypeScript** para o aplicativo mobile.
+- **JSON local** como fonte das mensagens; três tons: `poetica`, `mistica`, `humoristica`.
+- **AsyncStorage** para persistência local das últimas 10 consultas.
+- **Compartilhamento nativo**, priorizando a imagem do card e mantendo fallback em texto.
+- **EAS Build** para distribuição interna e teste em dispositivo Android físico.
 
-* Expo;
-* React Native;
-* TypeScript;
-* JSON local;
-* armazenamento local;
-* compartilhamento nativo;
-* EAS Build para testes internos.
+O MVP é **client-only**: não há backend, login ou geração de mensagens por IA no aplicativo. A IA atua no processo de construção, não no runtime.
 
-A arquitetura inicial é **client-only**, sem backend no MVP.
+O contrato de dados, as responsabilidades dos services/hooks e as dependências técnicas estão em `docs/ARCHITECTURE.md` e `docs/IMPLEMENTATION_MAP.md`.
 
 ---
 
-## Estado atual do projeto
+## Estado confirmado do repositório (base v4.5, preparação do EP.05)
 
-Status atual:
+### Concluído como planejamento/documentação
 
-* documentação de contexto criada;
-* agentes IA definidos;
-* backlog inicial consolidado;
-* decisões registradas;
-* riscos iniciais registrados;
-* arquitetura inicial criada;
-* ADRs iniciais em preparação;
-* app ainda não scaffoldado.
+- Contexto, hipótese, restrições e backlog consolidados.
+- Time de agentes definido em `docs/AGENTS.md`.
+- Revisão crítica do backlog em `docs/BACKLOG_REVIEW.md`.
+- Checklist de QA preparado em `docs/QA_CHECKLIST.md`.
+- Plano de tarefas em `docs/TASKS.md`.
+- Arquitetura, cinco ADRs iniciais e mapa técnico aprovados/documentados.
+- Decisões, riscos e diário de bordo registrados.
 
-O repositório está, neste momento, na fase de **preparação estruturada antes da implementação**.
+### Ainda não concluído como execução
+
+- Base final curada em `app/src/data/messages.json` (Storyteller).
+- Especificação visual mínima da Home e do card (UX/UI).
+- Definição operacional de evidência para US-09 (QA, antes da validação).
+- Scaffold Expo em `app/` e arquivos de implementação.
+- Execução de testes, build interna e validação em Android físico.
+
+**Importante:** os artefatos de planejamento existem, mas **a pasta** `app/` **ainda não consta na base v4.4**. Nenhum teste funcional ou build deve ser declarado realizado até existir evidência correspondente.
 
 ---
 
-## Estrutura atual do repositório
+## Estrutura de arquivos existente
 
 ```text
 oraculo-paf/
-  docs/
-    AGENTS.md
-    ARCHITECTURE.md
-    BACKLOG.md
-    DECISIONS.md
-    DIARY.md
-    PROJECT_CONTEXT.md
-    RISKS.md
-
   README.md
+  docs/
+    PROJECT_CONTEXT.md
+    AGENTS.md
+    BACKLOG.md
+    BACKLOG_REVIEW.md
+    QA_CHECKLIST.md
+    TASKS.md
+    ARCHITECTURE.md
+    IMPLEMENTATION_MAP.md
+    DECISIONS.md
+    RISKS.md
+    DIARY.md
+    adr/
+      ADR-001-stack-expo-react-native.md
+      ADR-002-json-local-no-mvp.md
+      ADR-003-sem-backend-no-mvp.md
+      ADR-004-historico-local-limitado.md
+      ADR-005-compartilhamento-card.md
 ```
 
-Estrutura planejada para a aplicação:
+Estrutura técnica planejada (ainda não implementada nesta base):
 
 ```text
-oraculo-paf/
-  app/
-    src/
-      components/
-      screens/
-      data/
-      services/
-      hooks/
-      utils/
-      theme/
-      types/
+app/
+  src/
+    components/
+    screens/
+    data/
+    services/
+    hooks/
+    utils/
+    theme/
+    types/
 ```
 
----
-
-## Documentação principal
-
-### `docs/PROJECT_CONTEXT.md`
-
-Documento central de contexto do projeto.
-
-Contém:
-
-* visão do produto;
-* hipótese principal;
-* escopo do MVP;
-* fora do escopo;
-* stack planejada;
-* riscos;
-* critérios de pronto;
-* princípios de decisão.
-
-Todos os agentes devem considerar este documento antes de gerar qualquer saída.
+Arquivos técnicos detalhados estão mapeados em `docs/IMPLEMENTATION_MAP.md`. As pastas não devem ser usadas como prova de funcionalidade pronta.
 
 ---
 
-### `docs/AGENTS.md`
+## Documentos e fontes de verdade
 
-Define os agentes IA oficiais do projeto:
+| Documento | Finalidade |
+|---|---|
+| `docs/PROJECT_CONTEXT.md` | Visão, hipótese, restrições e princípios |
+| `docs/AGENTS.md` | Papéis, limites e orientações dos agentes |
+| `docs/BACKLOG.md` | User stories, MoSCoW e critérios de aceite |
+| `docs/BACKLOG_REVIEW.md` | Revisão crítica já realizada pelo PO |
+| `docs/QA_CHECKLIST.md` | Cenários, riscos e checklist go/no-go |
+| `docs/TASKS.md` | Tarefas, dependências e acompanhamento da execução |
+| `docs/ARCHITECTURE.md` | Arquitetura e contratos de dados |
+| `docs/IMPLEMENTATION_MAP.md` | Mapeamento de histórias/tarefas para arquivos e ordem técnica |
+| `docs/DECISIONS.md` | Decisões aprovadas |
+| `docs/RISKS.md` | Riscos e mitigação |
+| `docs/DIARY.md` | Histórico real de execução e aprendizados |
+| `docs/adr/` | ADR-001 a ADR-005, já existentes e aprovados |
 
-* Product Owner Agent;
-* Software Architect Agent;
-* Frontend Mobile Agent;
-* UX/UI Agent;
-* QA Agent;
-* Storyteller Agent;
-* PMO / Project Manager Agent;
-* DevOps / Build Agent.
-
-Cada agente possui missão, responsabilidades, limites, formato de resposta e prompt base.
-
----
-
-### `docs/BACKLOG.md`
-
-Backlog inicial consolidado do MVP.
-
-Contém:
-
-* épicos;
-* user stories;
-* critérios de aceite;
-* prioridades MoSCoW;
-* ordem sugerida de implementação;
-* riscos de escopo;
-* backlog futuro.
+O conteúdo histórico de revisões e diários não deve ser reescrito para parecer que atividades futuras já aconteceram.
 
 ---
 
-### `docs/ARCHITECTURE.md`
+## Agentes e execução
 
-Documento inicial de arquitetura.
+| Agente | Responsabilidade |
+|---|---|
+| Product Owner | Escopo, valor, backlog e critérios de aceite |
+| Software Architect | Arquitetura, contratos e decisões técnicas |
+| Storyteller | Mensagens e curadoria de conteúdo |
+| UX/UI | Home, card e legibilidade mínima |
+| QA | Cenários, estratégia de evidência e testes |
+| Frontend Mobile | Scaffold e implementação em Expo/React Native |
+| PMO / Project Manager | Status, riscos, rastreabilidade e diário de bordo |
+| DevOps / Build | Configuração e execução das builds internas |
 
-Contém:
+ChatGPT e Cursor são ferramentas complementares. A seleção deve seguir a tarefa: análise/curadoria/gestão no ChatGPT; leitura e alteração efetiva de arquivos/código no Cursor, quando aplicável. Saídas de agentes devem ser revisadas antes da incorporação.
 
-* visão arquitetural;
-* stack técnica;
-* estrutura sugerida de pastas;
-* modelo de dados;
-* fluxos principais;
-* estratégia para JSON local;
-* estratégia para histórico local;
-* estratégia para compartilhamento;
-* dependências sugeridas;
-* riscos técnicos;
-* ADRs recomendados.
+### Sequência operacional do EP.05
 
----
+1. **Storyteller:** gerar e curar pelo menos 15 mensagens válidas, com no mínimo cinco por tom, seguindo o schema existente.
+2. **UX/UI:** definir Home, card único e tokens visuais mínimos.
+3. **QA:** escolher o método de evidência técnica de US-09, sem tornar US-10 obrigatória; testes reais ocorrerão depois da implementação.
+4. **Frontend Mobile:** iniciar `TASK-SCAFFOLD-01` no Cursor. O scaffold pode começar em paralelo às três preparações anteriores; integrar os artefatos aprovados assim que disponíveis e avançar para a primeira consulta offline.
+5. **PMO:** consolidar somente entregas e resultados efetivamente observados; atualizar status, decisões e diário de bordo.
 
-### `docs/DECISIONS.md`
+**Não exigir que Storyteller, UX/UI e QA terminem para iniciar apenas o scaffold.** São dependências da integração/validação correspondente, não da criação do projeto Expo.
 
-Registro leve de decisões do projeto.
-
-Contém decisões de produto, arquitetura, gestão e execução.
-
----
-
-### `docs/RISKS.md`
-
-Registro dos riscos atuais do MVP.
-
-Cada risco contém:
-
-* descrição;
-* impacto;
-* probabilidade;
-* plano de mitigação;
-* dono sugerido;
-* status.
-
----
-
-### `docs/DIARY.md`
-
-Diário de bordo do projeto.
-
-Registra:
-
-* linha do tempo;
-* agentes executados;
-* artefatos criados;
-* decisões relevantes;
-* próximos passos.
-
----
-
-## Agentes IA
-
-Este projeto utiliza agentes IA especializados.
-
-A proposta não é usar um único chat genérico para todas as tarefas.
-
-A proposta é trabalhar com agentes com papel, contexto e responsabilidade específicos.
-
-Exemplo de agentes:
-
-| Agente                      | Função                                                        |
-| --------------------------- | ------------------------------------------------------------- |
-| Product Owner Agent         | Transformar visão em backlog, histórias e critérios de aceite |
-| Software Architect Agent    | Definir arquitetura simples e evolutiva                       |
-| PMO / Project Manager Agent | Registrar decisões, riscos, diário e próximos passos          |
-| UX/UI Agent                 | Orientar fluxo, hierarquia visual e experiência               |
-| Storyteller Agent           | Criar e curar mensagens do Oráculo                            |
-| Frontend Mobile Agent       | Implementar o app em Expo/React Native                        |
-| QA Agent                    | Criar cenários de teste e validar critérios                   |
-| DevOps / Build Agent        | Apoiar build interna e publicação inicial                     |
-
----
-
-## Estratégia de execução
-
-Ordem inicial recomendada:
-
-1. Contexto do projeto;
-2. Definição dos agentes;
-3. Backlog inicial;
-4. Registro de decisões e riscos;
-5. Arquitetura inicial;
-6. ADRs;
-7. UX/UI;
-8. Storyteller / mensagens;
-9. Scaffold Expo;
-10. Implementação frontend;
-11. QA;
-12. Build interna.
-
----
-
-## ADRs planejados
-
-Os primeiros ADRs previstos são:
-
-```text
-docs/adr/ADR-001-stack-expo-react-native.md
-docs/adr/ADR-002-json-local-no-mvp.md
-docs/adr/ADR-003-sem-backend-no-mvp.md
-docs/adr/ADR-004-historico-local-limitado.md
-docs/adr/ADR-005-compartilhamento-card.md
-```
-
----
-
-## Princípios do MVP
-
-Toda decisão deve respeitar os seguintes princípios:
-
-* simplicidade antes de sofisticação;
-* baixo atrito para o usuário;
-* sem login no MVP;
-* sem backend no MVP;
-* sem IA generativa em runtime no MVP;
-* foco no fluxo principal;
-* compartilhamento como principal sinal de validação;
-* documentação útil, não burocrática;
-* decisões registradas de forma rastreável;
-* evolução apenas após validação.
+A ordem de implementação Must, os critérios de pronto e as dependências detalhadas continuam em `docs/TASKS.md` e `docs/IMPLEMENTATION_MAP.md`.
 
 ---
 
 ## Como trabalhar neste repositório
 
-Antes de qualquer nova tarefa, o agente ou colaborador deve ler:
+Antes da execução, leia os documentos aplicáveis ao papel, começando por:
 
 ```text
 docs/PROJECT_CONTEXT.md
@@ -342,70 +195,31 @@ docs/DECISIONS.md
 docs/RISKS.md
 ```
 
-Para tarefas técnicas, considerar também:
+Para implementação, leia também:
 
 ```text
 docs/ARCHITECTURE.md
+docs/IMPLEMENTATION_MAP.md
+docs/TASKS.md
+docs/QA_CHECKLIST.md
+docs/adr/
 ```
 
-Nenhuma implementação deve adicionar backend, login, Supabase ou IA generativa em runtime sem revisão explícita de escopo.
+Regras operacionais:
 
----
-
-## Status resumido
-
-```text
-✅ Contexto definido
-✅ Agentes definidos
-✅ Backlog consolidado
-✅ PMO inicial executado
-✅ Decisões registradas
-✅ Riscos registrados
-✅ Arquitetura inicial criada
-⏳ ADRs iniciais em criação
-⏳ UX/UI Agent pendente
-⏳ Storyteller Agent pendente
-⏳ Scaffold Expo pendente
-```
-
----
-
-## Próximos passos
-
-Próximos passos imediatos:
-
-1. Criar ADRs iniciais em `docs/adr/`;
-2. Atualizar `DIARY.md`, `DECISIONS.md` e `RISKS.md` após execução do Software Architect Agent;
-3. Executar UX/UI Agent;
-4. Executar Storyteller Agent;
-5. Criar scaffold Expo;
-6. Iniciar implementação das histórias Must.
+- Cada alteração deve estar vinculada a uma user story/tarefa ou a uma correção justificada.
+- Registre comandos executados, resultados, erros e limitações sem inventar evidências.
+- Diferencie **planejado**, **implementado**, **testado** e **validado em Android real**.
+- Não acrescente recursos fora do MVP para resolver conveniências de implementação.
+- Prefira uma entrega vertical pequena e demonstrável a várias camadas incompletas.
+- Atualize o diário após a execução, não antecipadamente.
 
 ---
 
 ## Série editorial
 
-Este projeto é documentado publicamente na série **“Do Zero ao Produto”**, da newsletter **Papo de Gerente**.
+A série **Do Zero ao Produto**, da newsletter **Papo de Gerente**, relata prompts, respostas, decisões, erros, código e validações reais. O EP.04 cobriu a transformação do backlog em critérios testáveis, tarefas e mapa técnico. O EP.05 acompanhará a passagem à execução, com o board mínimo como instrumento de gestão e não como finalidade.
 
-A série acompanha:
+**Frase guia:** “Antes de acelerar com IA, organize o caminho.”
 
-* decisões reais;
-* prompts usados;
-* respostas dos agentes;
-* análises críticas;
-* erros e ajustes;
-* artefatos de projeto;
-* código;
-* QA;
-* build;
-* aprendizados sobre uso prático de IA em projetos de tecnologia.
-
----
-
-## Frase guia
-
-> Antes de acelerar com IA, organize o caminho.
-
-E também:
-
-> IA acelera. Mas se o caminho estiver errado, ela só ajuda você a errar mais rápido.
+**Princípio central:** IA acelera. Mas, se o caminho estiver errado, ela só ajuda você a errar mais rápido.

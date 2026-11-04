@@ -1,4 +1,4 @@
-# DECISIONS.md
+# [DECISIONS.md](http://DECISIONS.md)
 
 # ORÁCULO PAF — Registro de Decisões
 
@@ -8,10 +8,10 @@ Registrar decisões relevantes do projeto ORÁCULO PAF de forma simples, rastre�
 
 Cada decisão deve conter:
 
-* contexto;
-* justificativa;
-* impacto no MVP;
-* status.
+- contexto;
+- justificativa;
+- impacto no MVP;
+- status.
 
 Este documento não substitui ADRs técnicos detalhados.
 Ele funciona como um registro leve de decisões de produto, gestão e arquitetura inicial.
@@ -34,18 +34,20 @@ O ORÁCULO PAF será o produto principal da série.
 
 O ORÁCULO PAF permite trabalhar:
 
-* discovery;
-* MVP;
-* experiência mobile;
-* conteúdo;
-* design emocional;
-* compartilhamento;
-* arquitetura simples;
-* desenvolvimento com IA;
-* uso de agentes;
-* QA;
-* build;
-* publicação inicial.
+- discovery;
+- MVP;
+- experiência mobile;
+- conteúdo;
+- design emocional;
+- compartilhamento;
+- arquitetura simples;
+- desenvolvimento com IA;
+- uso de agentes;
+- QA;
+- build;
+- publicação inicial.
+
+
 
 ## Impacto no MVP
 
@@ -57,7 +59,11 @@ Aprovada.
 
 ---
 
+
+
 # DEC-002 — Validar identificação e compartilhamento como hipótese principal
+
+
 
 ## Contexto
 
@@ -71,14 +77,18 @@ A hipótese principal do MVP será:
 
 > Usuários irão se identificar com mensagens rápidas, poéticas, místicas ou humorísticas a ponto de querer compartilhar o card gerado.
 
+
+
 ## Justificativa
 
 Essa hipótese conecta diretamente:
 
-* valor emocional;
-* experiência visual;
-* comportamento de compartilhamento;
-* potencial orgânico do produto.
+- valor emocional;
+- experiência visual;
+- comportamento de compartilhamento;
+- potencial orgânico do produto.
+
+
 
 ## Impacto no MVP
 
@@ -90,7 +100,11 @@ Aprovada.
 
 ---
 
+
+
 # DEC-003 — Não incluir login no MVP
+
+
 
 ## Contexto
 
@@ -110,11 +124,13 @@ A primeira validação deve permitir que o usuário abra o app e use imediatamen
 
 ## Impacto no MVP
 
-* reduz escopo;
-* reduz dependências;
-* acelera implementação;
-* simplifica testes;
-* reforça baixo atrito.
+- reduz escopo;
+- reduz dependências;
+- acelera implementação;
+- simplifica testes;
+- reforça baixo atrito.
+
+
 
 ## Status
 
@@ -122,7 +138,11 @@ Aprovada.
 
 ---
 
+
+
 # DEC-004 — Não incluir backend no MVP
+
+
 
 ## Contexto
 
@@ -142,11 +162,13 @@ A validação inicial pode ser feita sem infraestrutura remota.
 
 ## Impacto no MVP
 
-* reduz complexidade técnica;
-* reduz custo;
-* elimina dependência de rede;
-* acelera entrega;
-* permite foco no fluxo principal.
+- reduz complexidade técnica;
+- reduz custo;
+- elimina dependência de rede;
+- acelera entrega;
+- permite foco no fluxo principal.
+
+
 
 ## Status
 
@@ -154,7 +176,11 @@ Aprovada.
 
 ---
 
+
+
 # DEC-005 — Usar JSON local para mensagens
+
+
 
 ## Contexto
 
@@ -170,11 +196,13 @@ As mensagens iniciais serão armazenadas em arquivo JSON local.
 
 JSON local permite:
 
-* simplicidade;
-* funcionamento offline;
-* facilidade de curadoria;
-* separação entre conteúdo e interface;
-* evolução futura para backend se houver validação.
+- simplicidade;
+- funcionamento offline;
+- facilidade de curadoria;
+- separação entre conteúdo e interface;
+- evolução futura para backend se houver validação.
+
+
 
 ## Impacto no MVP
 
@@ -186,7 +214,11 @@ Aprovada.
 
 ---
 
+
+
 # DEC-006 — Não incluir IA generativa em tempo real dentro do app
+
+
 
 ## Contexto
 
@@ -202,12 +234,12 @@ O MVP não terá IA generativa em tempo real dentro do app.
 
 IA generativa em runtime adicionaria:
 
-* custo;
-* latência;
-* dependência de API;
-* necessidade de backend ou chave segura;
-* riscos de conteúdo;
-* complexidade de moderação.
+- custo;
+- latência;
+- dependência de API;
+- necessidade de backend ou chave segura;
+- riscos de conteúdo;
+- complexidade de moderação.
 
 A IA será usada no processo, não obrigatoriamente dentro do produto final.
 
@@ -221,7 +253,11 @@ Aprovada.
 
 ---
 
+
+
 # DEC-007 — Usar Expo, React Native e TypeScript
+
+
 
 ## Contexto
 
@@ -233,20 +269,24 @@ O ORÁCULO PAF será um app mobile com experiência simples, visual e compartilh
 
 A stack inicial será:
 
-* Expo;
-* React Native;
-* TypeScript.
+- Expo;
+- React Native;
+- TypeScript.
+
+
 
 ## Justificativa
 
 Essa stack favorece:
 
-* velocidade;
-* prototipação;
-* base única mobile;
-* boa integração com build interno;
-* organização com tipagem;
-* evolução futura.
+- velocidade;
+- prototipação;
+- base única mobile;
+- boa integração com build interno;
+- organização com tipagem;
+- evolução futura.
+
+
 
 ## Impacto no MVP
 
@@ -258,7 +298,11 @@ Aprovada.
 
 ---
 
+
+
 # DEC-008 — Limitar histórico às últimas 10 mensagens
+
+
 
 ## Contexto
 
@@ -276,11 +320,13 @@ Esse limite entrega continuidade mínima sem criar complexidade.
 
 ## Impacto no MVP
 
-* sem login;
-* sem nuvem;
-* sem perfil;
-* sem favoritos no MVP;
-* baixo risco técnico.
+- sem login;
+- sem nuvem;
+- sem perfil;
+- sem favoritos no MVP;
+- baixo risco técnico.
+
+
 
 ## Status
 
@@ -288,7 +334,11 @@ Aprovada.
 
 ---
 
+
+
 # DEC-009 — Priorizar compartilhamento do card
+
+
 
 ## Contexto
 
@@ -314,7 +364,11 @@ Aprovada.
 
 ---
 
+
+
 # DEC-010 — Usar agentes IA especializados
+
+
 
 ## Contexto
 
@@ -328,12 +382,14 @@ O projeto utilizará agentes IA especializados.
 
 Agentes especializados permitem:
 
-* melhor contexto;
-* papéis claros;
-* responsabilidades definidas;
-* saídas mais consistentes;
-* rastreabilidade;
-* melhor uso de IA no processo.
+- melhor contexto;
+- papéis claros;
+- responsabilidades definidas;
+- saídas mais consistentes;
+- rastreabilidade;
+- melhor uso de IA no processo.
+
+
 
 ## Impacto no MVP
 
@@ -345,7 +401,11 @@ Aprovada.
 
 ---
 
+
+
 # DEC-011 — Usar ChatGPT e Cursor de forma complementar
+
+
 
 ## Contexto
 
@@ -355,8 +415,10 @@ O projeto precisa tanto de estratégia e documentação quanto de execução té
 
 Usar:
 
-* ChatGPT para produto, PMO, documentação, conteúdo e análise;
-* Cursor para arquitetura, implementação, QA técnico e build.
+- ChatGPT para produto, PMO, documentação, conteúdo e análise;
+- Cursor para arquitetura, implementação, QA técnico e build.
+
+
 
 ## Justificativa
 
@@ -375,7 +437,11 @@ Aprovada.
 
 ---
 
+
+
 # DEC-012 — Consolidar outputs do ChatGPT e Cursor para o backlog
+
+
 
 ## Contexto
 
@@ -392,11 +458,13 @@ Criar uma versão consolidada do `docs/BACKLOG.md`.
 
 A versão consolidada aproveita:
 
-* profundidade de produto;
-* objetividade operacional;
-* estrutura implementável;
-* proteção de escopo;
-* ordem sugerida de execução.
+- profundidade de produto;
+- objetividade operacional;
+- estrutura implementável;
+- proteção de escopo;
+- ordem sugerida de execução.
+
+
 
 ## Impacto no MVP
 
@@ -408,7 +476,11 @@ Aprovada.
 
 ---
 
+
+
 # DEC-013 — Executar PMO antes do Arquiteto
+
+
 
 ## Contexto
 
@@ -424,10 +496,12 @@ Executar o PMO / Project Manager Agent antes do Software Architect Agent.
 
 Isso cria rastreabilidade inicial e organiza:
 
-* decisões;
-* riscos;
-* diário de bordo;
-* próximos passos.
+- decisões;
+- riscos;
+- diário de bordo;
+- próximos passos.
+
+
 
 ## Impacto no MVP
 
@@ -439,7 +513,11 @@ Aprovada.
 
 ---
 
+
+
 # DEC-014 — Manter documentação leve
+
+
 
 ## Contexto
 
@@ -465,7 +543,11 @@ Aprovada.
 
 ---
 
+
+
 # DEC-015 — Confirmar arquitetura client-only para o MVP
+
+
 
 ## Contexto
 
@@ -487,6 +569,8 @@ A arquitetura inicial será baseada em:
 - compartilhamento nativo;
 - EAS Build.
 
+
+
 ## Justificativa
 
 A hipótese principal do MVP pode ser validada sem backend, login, Supabase ou IA generativa em runtime.
@@ -501,13 +585,19 @@ A arquitetura client-only reduz complexidade, custo, dependências externas e te
 - preserva baixo atrito;
 - mantém foco nas histórias Must do backlog.
 
+
+
 ## Status
 
 Aprovada.
 
 ---
 
+
+
 # DEC-016 — Criar ADRs técnicos curtos antes da implementação
+
+
 
 ## Contexto
 
@@ -527,6 +617,8 @@ ADRs iniciais:
 - `ADR-004-historico-local-limitado.md`
 - `ADR-005-compartilhamento-card.md`
 
+
+
 ## Justificativa
 
 Os ADRs ajudam a:
@@ -536,9 +628,35 @@ Os ADRs ajudam a:
 - dar rastreabilidade técnica ao projeto;
 - manter coerência entre backlog, arquitetura e implementação.
 
+
+
 ## Impacto no MVP
 
 A implementação poderá começar com decisões técnicas mínimas já registradas, sem criar documentação excessiva.
+
+## Status
+
+Aprovada.
+
+# DEC-017 — Definir base mínima de mensagens por tom
+
+
+
+## Contexto
+
+O QA Agent apontou que “quantidade mínima por tom” estava ambígua na US-05.
+
+## Decisão
+
+A base inicial do MVP deverá conter pelo menos 5 mensagens válidas por tom: poética, mística e humorística.
+
+## Justificativa
+
+Isso torna a curadoria inicial mensurável sem ampliar demais o escopo.
+
+## Impacto no MVP
+
+O Storyteller Agent deverá gerar e curar no mínimo 15 mensagens válidas para a primeira base local.
 
 ## Status
 

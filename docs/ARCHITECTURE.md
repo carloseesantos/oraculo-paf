@@ -62,7 +62,7 @@ abrir → carregar JSON local → consultar → card → compartilhar → histó
 | UI | **React Native** | Telas e componentes mobile |
 | Linguagem | **TypeScript** | Tipos para mensagem, histórico e serviços |
 | Conteúdo | **JSON local** | Pool de mensagens embarcado |
-| Persistência | **Armazenamento local** (`AsyncStorage` via Expo) | Últimas 10 consultas |
+| Persistência | **Armazenamento local** (`AsyncStorage` compatível com Expo) | Últimas 10 consultas |
 | Share | **Compartilhamento nativo** (`expo-sharing` + captura de view) | Card para apps externos |
 | Distribuição | **EAS Build** | Build interna Android |
 
@@ -175,7 +175,7 @@ oraculo-paf/
 | `app/` | Projeto Expo: config, entry, assets, build | `app.json`, ícones, splash mínima |
 | `src/` | Código da aplicação | tudo abaixo |
 | `components/` | Peças visuais sem I/O pesado | `MessageCard`, `ConsultButton` |
-| `screens/` | Composição de fluxo por tela | `HomeScreen`, `HistoryScreen` |
+| `screens/` | Composição de fluxo por tela | `HomeScreen`; `HistoryScreen` somente se US-10 entrar como Should |
 | `data/` | Conteúdo estático | `messages.json` |
 | `services/` | Persistência, share, carga/validação de mensagens | `historyService`, `shareService`, `messagesService` |
 | `hooks/` | Estado de tela e casos de uso | `useOracleMessage`, `useHistory` |
@@ -196,8 +196,13 @@ screens → components → theme/types
 
 ### Navegação
 
-Duas telas bastam: **Home** e **Histórico**.  
-Usar React Navigation (stack simples) ou Expo Router com rotas mínimas — escolher uma e não misturar. Preferência inicial: **stack simples** se reduzir setup; Expo Router ok se o scaffold Expo já trouxer.
+Para as histórias Must do MVP, **uma tela é suficiente**: `HomeScreen`.
+
+A tela de histórico visual (`HistoryScreen`) está associada à US-10, classificada como Should. Portanto, ela não é requisito obrigatório para iniciar o scaffold nem para validar o fluxo principal do MVP.
+
+A US-09 exige persistência local das últimas 10 consultas, mas não exige uma tela de histórico como parte do Must. A evidência de QA para US-09 pode ser feita por inspeção de storage, log/debug temporário ou mecanismo técnico controlado, sem promover US-10 a bloqueador.
+
+Se a US-10 entrar depois, usar navegação simples e manter apenas uma escolha: React Navigation ou Expo Router. Não misturar abordagens no MVP.
 
 ---
 
@@ -342,10 +347,20 @@ Snapshot do texto evita quebra se o JSON mudar entre builds.
 
 ## 6.8 Visualizar histórico local
 
-1. Navegar para History (US-10).
-2. Listar até 10 entradas (mais recente primeiro).
-3. Estado vazio explícito se nunca consultou.
-4. Share a partir do histórico (US-11 — Should) reutiliza `shareService`.
+A visualização do histórico pertence à US-10, classificada como Should.
+
+Ela não bloqueia o MVP Must.
+
+Para a US-09, o requisito obrigatório é apenas persistir localmente as últimas 10 consultas, respeitando limite, ordem e FIFO.
+
+A evidência de QA para US-09 deve ser feita por um destes métodos:
+
+1. inspeção de storage local;
+2. log/debug temporário durante teste interno;
+3. tela mínima temporária de diagnóstico;
+4. implementação posterior da US-10, desde que não atrase US-07 e US-13.
+
+A US-11, compartilhar a partir do histórico, continua Should condicionado e só deve reutilizar o `shareService` já criado para US-07.
 
 ---
 
@@ -454,7 +469,7 @@ Não criar gerador de PDF, deep links ou share server-side no MVP.
 | `@react-native-async-storage/async-storage` | Histórico |
 | `expo-sharing` | Share nativo |
 | lib de captura de view (ex. `react-native-view-shot`) | Imagem do card |
-| navegação mínima (`@react-navigation/native` + stack **ou** Expo Router) | Home ↔ History |
+
 
 ## 10.2 Opcionais (só com justificativa)
 
@@ -463,6 +478,7 @@ Não criar gerador de PDF, deep links ou share server-side no MVP.
 | `expo-font` | Tipografia custom mínima (US-12) |
 | lib leve de animação / Reanimated | Apenas US-08 (Could), se não degradar |
 | schema validator leve | Se validação manual ficar frágil |
+| navegação mínima (`@react-navigation/native` + stack **ou** Expo Router) | Home ↔ History |
 
 ## 10.3 Evitar no MVP
 
@@ -506,8 +522,8 @@ Novos riscos descobertos na implementação devem voltar para `docs/RISKS.md`, n
 - [x] Fluxos Must descritos
 - [x] Estratégia JSON, histórico e share
 - [x] Lista do que não instalar
-- [ ] ADRs iniciais criados (ou aceitos como pendência explícita — ver §13)
-- [ ] Scaffold Expo criado na pasta `app/` (tarefa do Frontend / DevOps leve)
+- [x] ADRs iniciais criados em `docs/adr/`
+- [ ] Scaffold Expo criado na pasta `app/` (primeira tarefa do Frontend Mobile Agent)
 
 ## 12.2 Pode evoluir depois
 
@@ -522,21 +538,23 @@ Novos riscos descobertos na implementação devem voltar para `docs/RISKS.md`, n
 
 ---
 
-# 13. ADRs sugeridos
+# 13. ADRs registrados
 
-Criar em `docs/adr/` (curtos: contexto, decisão, consequências).
+Os ADRs iniciais já foram criados em `docs/adr/` e representam as decisões arquiteturais aprovadas para o MVP.
 
-| Arquivo | Conteúdo |
-|---------|----------|
-| `ADR-001-stack-expo-react-native.md` | Expo + RN + TS + EAS |
-| `ADR-002-json-local-no-mvp.md` | Mensagens embarcadas |
-| `ADR-003-sem-backend-no-mvp.md` | Client-only; evolução futura |
-| `ADR-004-historico-local-limitado.md` | AsyncStorage, 10, FIFO, sem login |
-| `ADR-005-compartilhamento-card.md` | Captura + share nativo + fallback texto |
+| ADR | Decisão | Status |
+|-----|---------|--------|
+| `ADR-001-stack-expo-react-native.md` | Usar Expo, React Native e TypeScript como base do app mobile | Aprovado |
+| `ADR-002-json-local-no-mvp.md` | Usar JSON local como fonte inicial de mensagens | Aprovado |
+| `ADR-003-sem-backend-no-mvp.md` | Manter o MVP sem backend | Aprovado |
+| `ADR-004-historico-local-limitado.md` | Persistir histórico local limitado às últimas 10 consultas | Aprovado |
+| `ADR-005-compartilhamento-card.md` | Priorizar compartilhamento do card com fallback em texto | Aprovado |
 
-Os ADRs detalham o que já está aprovado em `DECISIONS.md` (DEC-003 a DEC-009). Não duplicar prosa longa — 1 página cada.
+## 13.1 Regra para novos ADRs
 
-**Não criar agora:** ADR de Supabase, auth, IA runtime, microserviços.
+Novos ADRs só devem ser criados quando houver uma decisão arquitetural relevante que altere escopo, dependências, estrutura técnica ou estratégia de validação.
+
+Não criar ADR para detalhes triviais de implementação.
 
 ---
 
@@ -545,7 +563,7 @@ Os ADRs detalham o que já está aprovado em `DECISIONS.md` (DEC-003 a DEC-009).
 ## 14.1 Frontend Mobile Agent
 
 - Scaffold Expo em `app/` seguindo a árvore deste documento.
-- Ordem Must do backlog: US-04 → US-01/02 → US-06 → US-07 → US-09/10 → US-12 → US-13.
+- Ordem Must do backlog: US-04/05 → US-01/02 → US-06 → US-07 → US-09 → US-12 → US-13. **US-10 é Should, não bloqueia o Must.**
 - Spike de share em Android o mais cedo possível após o card mínimo.
 - Não introduzir backend, login nem estado global pesado.
 - Types + services antes de “frameworkizar”.
@@ -566,16 +584,17 @@ Os ADRs detalham o que já está aprovado em `DECISIONS.md` (DEC-003 a DEC-009).
 
 ## 14.4 Próximo agente a executar
 
-Ordem sugerida em `AGENTS.md`:
+Para o início da execução do EP.05:
 
-1. **UX/UI Agent** — fluxo e hierarquia visual mínima (desbloqueia card sem overdesign).  
-2. Em paralelo de conteúdo: **Storyteller Agent** — `messages.json` inicial.  
-3. Depois: **Frontend Mobile Agent** — implementação.  
-4. Em seguida: **QA Agent** → **DevOps / Build Agent** (EAS).
+1. **Storyteller Agent** — gerar e curar o JSON inicial (≥5 mensagens válidas por tom).
+2. **UX/UI Agent** — fechar a composição mínima de Home, card e tema, sem múltiplos templates.
+3. **QA Agent** — definir método técnico de evidência para US-09 sem exigir US-10; executar testes apenas quando houver implementação.
+4. **Frontend Mobile Agent** — iniciar o scaffold Expo `app/` no Cursor e avançar, de forma incremental, pela cadeia Must. **O scaffold pode iniciar em paralelo às etapas 1–3.** Integrar conteúdo e UX aprovados quando estiverem disponíveis.
+5. **PMO / Project Manager Agent** — consolidar evidências reais, atualizar tarefas/status e registrar o diário após os trabalhos.
 
-Se o time já tiver identidade mínima clara, pode ir direto ao **Frontend Mobile Agent**, desde que o spike de share e o JSON estejam no plano imediato.
+**DevOps / Build Agent** entra quando houver fluxo mínimo integrável e necessidade de configurar/gerar build interna. A validação efetiva de compartilhamento exige Android físico; a estratégia de QA não substitui esse teste.
 
-**PMO:** atualizar `DIARY.md`, marcar RISK-011, e opcionalmente criar os ADRs do §13.
+Os cinco ADRs da seção 13 **já existem**. O PMO não deve criá-los novamente; deve registrar apenas novas decisões que surgirem da execução.
 
 ---
 
@@ -584,9 +603,24 @@ Se o time já tiver identidade mínima clara, pode ir direto ao **Frontend Mobil
 | Tema | Decisão |
 |------|---------|
 | Forma | App Expo client-only |
-| Dados | JSON local + AsyncStorage (10) |
-| Núcleo | Card + share nativo |
+| Dados | JSON local + AsyncStorage para histórico local limitado a 10 consultas |
+| Núcleo | Consulta rápida + card visual + share nativo |
+| Tela Must | `HomeScreen` |
+| Histórico visual | `HistoryScreen` somente se US-10 entrar como Should |
 | Proibido no MVP | Backend, login, Supabase, IA runtime |
 | Sucesso arquitetural | Hipótese testável em build interna Android com fluxo Must estável |
 
-> Arquitetura boa neste projeto é a que some atrás de uma consulta rápida e um card compartilhável.
+A cadeia técnica Must é:
+
+```text
+messages.json
+→ message.types.ts
+→ messagesService.ts
+→ useOracleMessage.ts
+→ HomeScreen
+→ MessageCard
+→ shareService
+→ historyService
+→ EAS Build
+→ QA em Android real
+```

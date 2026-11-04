@@ -1,0 +1,218 @@
+[
+  {
+    "id": "msg-001",
+    "text": "Até a janela fechada guarda um pedaço de céu.",
+    "tone": "poetica",
+    "category": "possibilidades",
+    "tags": [
+      "janela",
+      "céu",
+      "esperança"
+    ],
+    "shareable": true
+  },
+  {
+    "id": "msg-002",
+    "text": "Há recomeços que chegam sem malas, só com espaço.",
+    "tone": "poetica",
+    "category": "recomecos",
+    "tags": [
+      "recomeço",
+      "espaço",
+      "mudança"
+    ],
+    "shareable": true
+  },
+  {
+    "id": "msg-003",
+    "text": "Nem toda despedida faz barulho; algumas viram horizonte.",
+    "tone": "poetica",
+    "category": "despedidas",
+    "tags": [
+      "despedida",
+      "horizonte",
+      "transformação"
+    ],
+    "shareable": true
+  },
+  {
+    "id": "msg-004",
+    "text": "A manhã encontrou luz onde ontem só havia pressa.",
+    "tone": "poetica",
+    "category": "cotidiano",
+    "tags": [
+      "manhã",
+      "luz",
+      "tempo"
+    ],
+    "shareable": true
+  },
+  {
+    "id": "msg-005",
+    "text": "O que não coube em palavras ficou aceso no olhar.",
+    "tone": "poetica",
+    "category": "afetos",
+    "tags": [
+      "olhar",
+      "sentimento",
+      "silêncio"
+    ],
+    "shareable": true
+  },
+  {
+    "id": "msg-006",
+    "text": "Uma lembrança pode aquecer o dia sem pedir para voltar.",
+    "tone": "poetica",
+    "category": "memorias",
+    "tags": [
+      "lembrança",
+      "saudade",
+      "tempo"
+    ],
+    "shareable": true
+  },
+  {
+    "id": "msg-007",
+    "text": "O próximo sinal pode chegar vestido de coincidência.",
+    "tone": "mistica",
+    "category": "sinais",
+    "tags": [
+      "sinal",
+      "coincidência",
+      "atenção"
+    ],
+    "shareable": true
+  },
+  {
+    "id": "msg-008",
+    "text": "Há perguntas que a sorte responde por caminhos laterais.",
+    "tone": "mistica",
+    "category": "caminhos",
+    "tags": [
+      "sorte",
+      "perguntas",
+      "caminhos"
+    ],
+    "shareable": true
+  },
+  {
+    "id": "msg-009",
+    "text": "Se uma palavra insistir em aparecer, talvez mereça atenção.",
+    "tone": "mistica",
+    "category": "intuicao",
+    "tags": [
+      "palavra",
+      "intuição",
+      "atenção"
+    ],
+    "shareable": true
+  },
+  {
+    "id": "msg-010",
+    "text": "Nem todo presságio brilha; alguns passam de mansinho.",
+    "tone": "mistica",
+    "category": "pressagios",
+    "tags": [
+      "presságio",
+      "sutileza",
+      "mistério"
+    ],
+    "shareable": true
+  },
+  {
+    "id": "msg-011",
+    "text": "O mistério gosta de chegar quando você esquece o relógio.",
+    "tone": "mistica",
+    "category": "misterio",
+    "tags": [
+      "mistério",
+      "tempo",
+      "surpresa"
+    ],
+    "shareable": true
+  },
+  {
+    "id": "msg-012",
+    "text": "Entre duas escolhas, até o silêncio deixa pistas.",
+    "tone": "mistica",
+    "category": "escolhas",
+    "tags": [
+      "escolhas",
+      "silêncio",
+      "pistas"
+    ],
+    "shareable": true
+  },
+  {
+    "id": "msg-013",
+    "text": "Pedi uma resposta ao universo. Ele mandou um 'visualizado'.",
+    "tone": "humoristica",
+    "category": "expectativas",
+    "tags": [
+      "universo",
+      "mensagem",
+      "humor"
+    ],
+    "shareable": true
+  },
+  {
+    "id": "msg-014",
+    "text": "A intuição mandou um áudio. Você deixou para ouvir depois.",
+    "tone": "humoristica",
+    "category": "intuicao",
+    "tags": [
+      "intuição",
+      "áudio",
+      "procrastinação"
+    ],
+    "shareable": true
+  },
+  {
+    "id": "msg-015",
+    "text": "A sorte está a caminho. Pegou trânsito, aparentemente.",
+    "tone": "humoristica",
+    "category": "sorte",
+    "tags": [
+      "sorte",
+      "trânsito",
+      "espera"
+    ],
+    "shareable": true
+  },
+  {
+    "id": "msg-016",
+    "text": "Seu plano é excelente. Agora falta avisar a segunda-feira.",
+    "tone": "humoristica",
+    "category": "planos",
+    "tags": [
+      "planos",
+      "segunda-feira",
+      "rotina"
+    ],
+    "shareable": true
+  },
+  {
+    "id": "msg-017",
+    "text": "A paz interior chegou, mas esqueceu a senha do Wi-Fi.",
+    "tone": "humoristica",
+    "category": "cotidiano",
+    "tags": [
+      "paz",
+      "tecnologia",
+      "Wi-Fi"
+    ],
+    "shareable": true
+  },
+  {
+    "id": "msg-018",
+    "text": "O caos fez um cronograma. Naturalmente, atrasou.",
+    "tone": "humoristica",
+    "category": "imprevistos",
+    "tags": [
+      "caos",
+      "agenda",
+      "humor"
+    ],
+    "shareable": true
+  }
+]

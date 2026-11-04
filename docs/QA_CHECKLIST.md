@@ -202,6 +202,7 @@ A quantidade mínima inicial foi definida pela DEC-017:
 mínimo de 5 mensagens válidas por tom
 tons iniciais: poetica, mistica, humoristica
 mínimo total: 15 mensagens válidas
+```
 
 ---
 
@@ -286,12 +287,16 @@ A criação de `HistoryScreen` não é obrigatória para aprovar a US-09 no MVP 
 
 O QA deve registrar qual método foi usado na seção 9.4.
 
+**Método selecionado no EP.05 (DEC-023):** diagnóstico temporário em `__DEV__` com `historyService` real, fixtures determinísticas e AsyncStorage real, mais force-stop/reabertura; alternativa: inspeção direta do storage. Casos detalhados US09-QA01…QA10 em `docs/QA_US09_Estrategia_Evidencia_EP05.md` (todos NOT RUN).
+
+**Unidade do histórico:** cada entrada é um **evento de consulta**. O mesmo `messageId` pode aparecer em entradas diferentes, distinguidas por `consultedAt`. Unicidade de IDs não é requisito da US-09.
+
 #### Cenários
 
 | ID | Tipo | Passos | Esperado | Sev. |
 |----|------|--------|----------|------|
 | US09-P01 | P | Consultar 1× → fechar app (kill) → reabrir | Registro da consulta permanece no storage/histórico | B |
-| US09-P02 | P | Consultar 10 mensagens distintas (IDs) | Existem 10 entradas | B |
+| US09-P02 | P | Consultar 10 vezes (IDs podem repetir) | Existem 10 entradas, uma por evento de consulta | B |
 | US09-P03 | P | Consultar a 11ª | Permanecem 10; a mais antiga saiu (FIFO) | B |
 | US09-P04 | P | Verificar ordem | Mais recente primeiro | A |
 | US09-N01 | N | Tentar persistir mensagem inválida (ambiente de teste) | Não salva | A |
@@ -475,8 +480,6 @@ Preencher em device Android real. Marcar `[x]` / `[ ]`.
 
 ### 9.4 Histórico local
 
-### 9.4 Histórico local
-
 - [ ] Persistência sobrevive a kill/reabrir — US-09  
 - [ ] Limite 10 + FIFO validado — US-09  
 - [ ] Ordem recente → antiga validada — US-09  
@@ -558,6 +561,24 @@ Automação E2E, testes de regressão amplos, US Should/Could, iOS (salvo intere
 | 7 | US-13 go/no-go | Porta de saída do MVP interno |
 
 **Próximo passo sugerido:** PMO detalha tarefas; Storyteller entrega JSON (US-05); Frontend implementa Must; QA executa seção 9 na primeira build Android.
+
+---
+
+## 13. Estado de execução — EP.05 (consolidação v5.0, 03/11/2026)
+
+Os cenários acima continuam válidos e com os mesmos IDs. Esta seção registra apenas o que foi efetivamente verificado até o EP.05. A seção 9 (go/no-go) **não foi preenchida**: não existe build interna.
+
+| Camada | Situação | Cenários / evidência |
+|---|---|---|
+| **Especificados** | Documentados | Todos os cenários da seção 3; US09-QA01…QA10 em `docs/QA_US09_Estrategia_Evidencia_EP05.md` |
+| **Revisão editorial humana** | Concluída | US05-N01 e US05-N02 atendidos pela aprovação integral das 18 mensagens (DEC-018) |
+| **Verificações estáticas executadas** | PASS (reproduzidas pelo PMO) | `npm run check:messages` 17/17: schema e contagem (apoiam US04-P01, US04-P02, US05-P02); rejeição de registros sem `id`, `text` vazio, `tone` ausente ou inválido (US04-N01…N03, **no nível da função** `validateMessages`); campo extra aceito (US04-E01); `shareable: false` continua válida (parte de US04-E02); só inválidas → pool vazio sem exceção (US04-E03, **no nível da função**); sorteio dentro do pool. Inspeção de código: dados fora da UI (US04-P03) e um único template de card (apoia US06-E01, US12-N01). `npm run typecheck` exit 0; `expo-doctor` 20/20; export Android 634 módulos |
+| **Integração no app** | NOT RUN | Estado de falha segura renderizado (US04-E03 na UI), US02-N01, camada B da US-09, fluxo Consultar → card → share |
+| **Funcionais de UI** | NOT RUN | US01-*, US02-*, US05-P01/P03/UX01/E01/E02, US06-*, US12-* — a interface ainda não foi observada em execução |
+| **Android físico** | NOT RUN | US07-* (inclui US07-T01), US09-P01…E03 e camada C, US13-*, seção 9 inteira |
+| **Não implementado** | Sem código para testar | US-07 (compartilhamento), US-09 (histórico), US-13 (build EAS) |
+
+Verificações estáticas apoiam, mas não substituem, os cenários de runtime e de Android físico. Nenhum cenário da seção 3 foi marcado como aprovado em dispositivo.
 
 ---
 

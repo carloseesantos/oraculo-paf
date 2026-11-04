@@ -661,3 +661,239 @@ O Storyteller Agent deverá gerar e curar no mínimo 15 mensagens válidas para 
 ## Status
 
 Aprovada.
+
+---
+
+# Decisões registradas na consolidação do EP.05 (v5.0 — 03/11/2026)
+
+Legenda de status usada a partir daqui:
+
+- **Aprovada** — decisão tomada e válida para o escopo atual.
+- **Provisória** — adotada na implementação, mas ainda sujeita a confirmação.
+- **Pendente de aprovação** — proposta existente, sem decisão humana.
+
+---
+
+# DEC-018 — Aprovar integralmente a base inicial de 18 mensagens
+
+## Contexto
+
+O Storyteller Agent produziu 18 mensagens originais (seis por tom), validadas estruturalmente por verificações de contagem, formato e unicidade. Quatro mensagens foram sinalizadas pelo próprio agente para atenção editorial.
+
+## Decisão
+
+O responsável pelo produto revisou e aprovou as 18 mensagens, **incluindo as quatro inicialmente sinalizadas**, sem substituições nesta etapa. Confirmação expressa em 03/11/2026.
+
+## Justificativa
+
+A base atende à DEC-017 (≥ 5 válidas por tom) e passou por curadoria humana antes da integração ao aplicativo, como exigem TASK-US05-02 e o checklist editorial de US-05.
+
+## Impacto no MVP
+
+- TASK-US05-01, TASK-US05-02 e TASK-US04-02 concluídas.
+- Não há pendência de curadoria para a base atual; as observações iniciais do Storyteller foram superadas por esta decisão.
+- Alterações futuras no conteúdo exigem nova solicitação explícita.
+- A aprovação editorial não substitui o teste de legibilidade no card (TASK-US05-03) nem a validação da hipótese com usuários.
+
+## Status
+
+Aprovada (decisão humana).
+
+---
+
+# DEC-019 — Manter o Expo SDK 58 efetivamente instalado
+
+## Contexto
+
+O gerador `create-expo-app` (template `blank-typescript`) anunciou um template SDK 57, mas instalou o SDK 58 (`expo@58.0.23`, `react-native@0.88.1`, `react@19.3.0`, `typescript@6.0.3`). O `npm audit` aponta cinco vulnerabilidades moderadas em ferramentas do Expo (`glob`, `minimatch`, via `@expo/cli` e `@expo/fingerprint`); a correção automática `npm audit fix --force` instalaria `expo@53.0.11`.
+
+## Decisão
+
+Manter o SDK 58 instalado e não executar `npm audit fix --force`.
+
+## Justificativa
+
+O SDK 58 passou em `expo-doctor` (20/20) e `expo install --check`. Rebaixar cinco versões de SDK para corrigir alertas moderados em ferramentas de desenvolvimento traria mais risco que benefício. A decisão está dentro do ADR-001 (Expo); não há mudança arquitetural que justifique novo ADR.
+
+## Impacto no MVP
+
+- Compatibilidade do Expo Go instalado no Android físico com o SDK 58 **não verificada** (RISK-014).
+- Vulnerabilidades permanecem abertas e monitoradas (RISK-015).
+- Reavaliar se o Expo Go não suportar SDK 58: alternativa é build de desenvolvimento ou build interna EAS, não rebaixamento automático.
+
+## Status
+
+Aprovada para o estado atual, com gatilho de revisão no primeiro teste em Android.
+
+---
+
+# DEC-020 — Usar scaffold sem Expo Router, com uma única Home
+
+## Contexto
+
+O template gerado trazia um `AGENTS.md` que determinava Expo Router para toda a navegação. `ARCHITECTURE.md` e `IMPLEMENTATION_MAP.md` estabelecem que uma única `HomeScreen` basta para as histórias Must e que navegação só entra com US-10 (Should).
+
+## Decisão
+
+Usar o template `blank-typescript`, sem Expo Router nem React Navigation. `App.tsx` monta diretamente `HomeScreen`. O `AGENTS.md` do template não foi copiado para o repositório.
+
+## Justificativa
+
+Evita dependência e estrutura de rotas sem necessidade no Must. Se a US-10 entrar, a escolha entre Expo Router e React Navigation continua aberta, conforme `ARCHITECTURE.md` §4.
+
+## Impacto no MVP
+
+Uma tela, sem navegação. Nenhum fluxo extra criado.
+
+## Status
+
+Aprovada.
+
+---
+
+# DEC-021 — Integrar mensagens locais por import estático validado
+
+## Contexto
+
+`ARCHITECTURE.md` §7 recomenda import estático do JSON e um service único; a UI não deve importar o JSON diretamente.
+
+## Decisão
+
+- `messagesService` importa `messages.json`, valida cada registro com `validateMessage` e mantém em cache somente as mensagens válidas.
+- Registros inválidos ficam fora do pool e são registrados em desenvolvimento.
+- Pool vazio leva a Home ao estado de falha segura (Consultar desabilitado, sem crash).
+- **Política de IDs duplicados:** a primeira ocorrência válida é mantida e as seguintes são rejeitadas.
+
+## Justificativa
+
+Atende US-04 e RISK-013 sem bibliotecas de schema. A base aprovada não tem IDs duplicados; a política só se aplica a edições futuras do JSON.
+
+## Impacto no MVP
+
+Consulta offline sem I/O em runtime. A política de duplicados é comportamento implementado, não regra arquitetural confirmada.
+
+## Status
+
+- Import estático, validação e falha segura: **Aprovada** (alinhadas a `ARCHITECTURE.md` §5.5 e §7).
+- Política de IDs duplicados: **Provisória — pendente de confirmação do Software Architect / PO.** Não promover a regra definitiva sem essa confirmação.
+
+---
+
+# DEC-022 — Usar `react-native-safe-area-context` para áreas seguras
+
+## Contexto
+
+A especificação UX/UI exige respeitar barras de status e navegação do Android. O `SafeAreaView` nativo do React Native atende apenas iOS e está obsoleto; no Android atual o layout é edge-to-edge.
+
+## Decisão
+
+Adicionar `react-native-safe-area-context` (instalado via `expo install`) e usar `SafeAreaProvider` em `App.tsx` e `SafeAreaView` na Home.
+
+## Justificativa
+
+É a única dependência adicionada além do template, com justificativa funcional direta. Não altera arquitetura.
+
+## Impacto no MVP
+
+Conteúdo da Home dentro da área segura. Comportamento em aparelho ainda não observado.
+
+## Status
+
+Aprovada.
+
+---
+
+# DEC-023 — Adotar a estratégia de evidência técnica da US-09
+
+## Contexto
+
+US-09 (Must) exige persistência das últimas 10 consultas sem depender da US-10 (Should). TASK-US09-03 pedia a escolha do método antes da implementação.
+
+## Decisão
+
+Adotar o método do QA Agent em `docs/QA_US09_Estrategia_Evidencia_EP05.md`:
+
+- **principal:** diagnóstico temporário em `__DEV__` que chama o `historyService` real com fixtures determinísticas, grava no AsyncStorage real e registra snapshots de ordem, limite e FIFO; persistência confirmada por force-stop e reabertura;
+- **alternativo:** inspeção direta do AsyncStorage após consultas no app de desenvolvimento;
+- a unidade do histórico é o **evento de consulta**: o mesmo `messageId` pode aparecer em registros diferentes, distinguidos por `consultedAt`;
+- separação de evidências em serviço, integração e build Android físico;
+- US-10 não participa do aceite da US-09.
+
+## Justificativa
+
+Observa o mesmo serviço e o mesmo armazenamento de produção, sem criar tela de histórico.
+
+## Impacto no MVP
+
+- TASK-US09-03 concluída como planejamento; os 10 casos US09-QA01…QA10 continuam **NOT RUN**.
+- O cenário US09-P02 do `QA_CHECKLIST.md` foi corrigido para "dez eventos de consulta".
+- A política de recuperação de falhas de storage (seção 3 do documento de QA) continua **provisória** até a implementação.
+
+## Status
+
+Aprovada como método de evidência; execução pendente.
+
+---
+
+# DEC-024 — Aplicar os tokens visuais propostos como defaults provisórios
+
+## Contexto
+
+O UX/UI Agent propôs paleta, tipografia, espaçamentos e dimensões mínimas (seção 4 da especificação), marcados como defaults para implementação inicial, não como identidade aprovada.
+
+## Decisão
+
+O Frontend aplicou os tokens em `app/src/theme/theme.ts` (Home, botão Consultar e card), com comentário indicando aprovação humana pendente.
+
+## Justificativa
+
+Permite que a primeira implementação já siga uma identidade coerente sem bloquear a execução.
+
+## Impacto no MVP
+
+Se a identidade for alterada, basta ajustar `theme.ts`. Contrastes foram calculados a partir dos valores hexadecimais, não medidos em tela.
+
+## Status
+
+Provisória — **identidade visual pendente de aprovação humana** (TASK-US12-01).
+
+---
+
+# DEC-025 — Consolidar a versão documental 5.0 sem alterar a versão técnica do app
+
+## Contexto
+
+`app.version` versiona o repositório e a série de episódios. `app/package.json` e `app/app.json` têm seu próprio campo `version` (`1.0.0`), associado ao pacote e ao aplicativo.
+
+## Decisão
+
+Promover `app.version` de 4.5 para 5.0 ao fechar o EP.05, sem alterar `version` em `app/package.json` ou `app/app.json`.
+
+## Justificativa
+
+A versão 5.0 marca o fechamento auditável do EP.05. Não representa MVP concluído, release publicado nem validação em Android físico.
+
+## Impacto no MVP
+
+Dois sistemas de versionamento coexistem. Qualquer alinhamento entre eles deve ser proposto separadamente (provavelmente junto da primeira build interna, US-13).
+
+## Status
+
+Aprovada.
+
+---
+
+# Situação das decisões após o EP.05
+
+| ID | Tema | Status |
+|---|---|---|
+| DEC-018 | Aprovação editorial das 18 mensagens | Aprovada (decisão humana) |
+| DEC-019 | Manter Expo SDK 58 | Aprovada, com revisão no primeiro teste Android |
+| DEC-020 | Scaffold sem Expo Router; Home única | Aprovada |
+| DEC-021 | Import estático validado das mensagens | Aprovada; **política de IDs duplicados provisória** |
+| DEC-022 | `react-native-safe-area-context` | Aprovada |
+| DEC-023 | Estratégia de evidência da US-09 | Aprovada como método; execução pendente |
+| DEC-024 | Tokens visuais propostos aplicados | **Provisória — identidade pendente de aprovação** |
+| DEC-025 | Versão documental 5.0 separada da versão técnica | Aprovada |
+
+Nenhum ADR novo foi criado no EP.05: as decisões acima cabem nos ADR-001 a ADR-005 e não alteram arquitetura, escopo ou estratégia de validação.

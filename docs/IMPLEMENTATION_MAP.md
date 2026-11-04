@@ -501,6 +501,21 @@ Usar no código/JSON: `poetica` | `mistica` | `humoristica` (sem acento), alinha
 | Evidência QA para US-09 fechada | ⚠️ Definir método na 1ª sprint de histórico |
 | Scaffold `app/` existente | ❌ Ainda não |
 
+### 11.1 Atualização de estado — EP.05 (v5.0, 03/11/2026)
+
+A tabela acima é a fotografia anterior à execução. Após o EP.05:
+
+| Critério | Estado EP.05 |
+|----------|--------------|
+| Base mínima de mensagens | ✅ `messages.json` com 18 mensagens aprovadas (DEC-018) |
+| UX mínima da Home/card | ⚠️ Especificada em `docs/UX_UI_Especificacao_Minima.md`; tokens aplicados como provisórios (DEC-024) |
+| Evidência QA para US-09 | ✅ Método definido (DEC-023); execução NOT RUN |
+| Scaffold `app/` existente | ✅ Expo SDK 58; aplicação ainda não observada em execução |
+
+Arquivos da seção 7.1 já criados: `App.tsx`, `app.json`, `package.json`, `data/messages.json`, `types/message.types.ts`, `utils/validateMessage.ts`, `utils/randomMessage.ts`, `services/messagesService.ts`, `hooks/useOracleMessage.ts`, `screens/HomeScreen.tsx`, `components/ConsultButton.tsx`, `components/MessageCard.tsx` (sem `ref` de captura), `theme/theme.ts`. Também foi criado `app/scripts/check-messages.mjs` (checagem local de dados e sorteio).
+
+Ainda não criados: `eas.json`, `types/history.types.ts`, `services/shareService.ts`, `services/historyService.ts`, `hooks/useHistory.ts`, `components/ShareButton.tsx`.
+
 ### Bloqueios reais vs paralelizáveis
 
 | Bloqueia scaffold? | Item |

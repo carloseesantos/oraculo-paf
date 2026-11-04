@@ -137,6 +137,8 @@ JSON local → Home → Consultar → Card → Compartilhar → Histórico local
 **Dependências:** `ARCHITECTURE.md`, ADR-001 e `IMPLEMENTATION_MAP.md` (já disponíveis).  
 **Status na base v4.4:** `todo` — não existe pasta `app/`.
 
+**Status EP.05 (consolidação v5.0, 03/11/2026):** `review` — critérios técnicos atendidos; critério de execução em runtime ainda não satisfeito (ver avaliação abaixo).
+
 **Critérios de pronto:**
 
 * [ ] Projeto Expo criado em `app/` e TypeScript configurado.
@@ -146,6 +148,18 @@ JSON local → Home → Consultar → Card → Compartilhar → Histórico local
 * [ ] Nenhum login, backend, Supabase, IA em runtime ou US-10 é adicionado.
 
 **Observação:** o scaffold não depende do JSON curado, da especificação visual final nem da definição de evidência US-09. Essas entregas são necessárias para as respectivas integrações/validações posteriores.
+
+**Avaliação EP.05 dos critérios (PMO, a partir do repositório local):**
+
+| Critério | Situação | Evidência |
+|---|---|---|
+| Projeto Expo + TypeScript em `app/` | Atendido | Expo SDK 58 (`expo@58.0.23`), `tsconfig.json` estrito; `npm run typecheck` exit 0 (reproduzido pelo PMO) |
+| Árvore mínima `app/src` | Atendido | `components/`, `data/`, `hooks/`, `screens/`, `services/`, `theme/`, `types/`, `utils/`, todas com arquivos reais |
+| Aplicação executa em desenvolvimento | **Pendente** | Bundle Android exportado (634 módulos, reproduzido) e Metro servindo bundle de desenvolvimento HTTP 200 (relatado pelo Frontend). A interface **nunca foi observada em execução**: sem `adb`, emulador ou Android físico disponíveis na execução do Frontend |
+| Inventário de pacotes, comandos e arquivos | Atendido | Handoff do Frontend e `docs/EP05_EXECUTION_REPORT.md` §4 |
+| Sem login, backend, Supabase, IA runtime ou US-10 | Atendido | Dependências: `expo`, `expo-status-bar`, `react`, `react-native`, `react-native-safe-area-context` |
+
+A tarefa só passa a `done` quando a Home for aberta em emulador, Expo Go ou build de desenvolvimento, com registro da evidência.
 
 ---
 
@@ -1247,6 +1261,8 @@ Execuções propostas para a transição do EP.04 ao EP.05:
 
 **Fora desta rodada, salvo evidência de execução adicional:** build EAS validada, QA final do MVP, Android físico, histórico com interface, publicação pública. Esses itens não devem ser dados como concluídos automaticamente no EP.05.
 
+**Resultado da rodada (03/11/2026):** os cinco passos acima foram executados. O estado resultante está na seção 18.1 e o relato completo em `docs/EP05_EXECUTION_REPORT.md`. A próxima sequência técnica (EP.06) está na seção 20.
+
 ---
 
 # 18. Controle de status — linha de base para o EP.05
@@ -1272,6 +1288,70 @@ Uma decisão em ADR pode estar `done` como documentação, enquanto sua implemen
 
 ---
 
+# 18.1 Controle de status — EP.05 (consolidação v5.0, 03/11/2026)
+
+Fotografia produzida pelo PMO após auditar o repositório local (commits `ea9f2bc` e `353b898`) e reexecutar as verificações estáticas. A linha de base v4.4 da seção 18 permanece como registro histórico.
+
+**Dimensões do status.** Cada linha indica em qual dimensão o estado vale:
+
+* **doc** — especificação/decisão documentada;
+* **impl** — código existente no repositório;
+* **estático** — verificado por typecheck, script ou empacotamento, sem abrir o aplicativo;
+* **runtime** — observado com o aplicativo em execução (emulador, Expo Go ou build);
+* **Android** — validado em dispositivo Android físico.
+
+Nenhum item abaixo atingiu as dimensões **runtime** ou **Android**.
+
+| Tarefa | US | Responsável | Estado | Dimensão atingida | Artefato | Evidência disponível | Pendência / aceite não satisfeito |
+|---|---|---|---|---|---|---|---|
+| TASK-SCAFFOLD-01 | — (habilita Must) | Frontend Mobile | `review` | impl + estático | `app/` | typecheck exit 0; `expo-doctor` 20/20; `expo install --check` ok; export Android 634 módulos | Aplicação ainda não observada em execução |
+| TASK-US04-01 | US-04 | Architect | `done` | doc + impl | `app/src/types/message.types.ts` | Tipos alinhados a `ARCHITECTURE.md` §5 | — |
+| TASK-US04-02 | US-04 | Storyteller | `done` | impl + estático | `app/src/data/messages.json` | 18 registros, 18 válidos, 0 rejeitados, 6 por tom (`check:messages`, reproduzido) | — |
+| TASK-US04-03 | US-04 | Architect + QA (impl. Frontend) | `done` | impl + estático | `app/src/utils/validateMessage.ts` | Checagens negativas de `id`, `text`, `tone`, `tags`, `shareable` PASS | Política de IDs duplicados (manter a primeira ocorrência) é **provisória** — DEC-021 |
+| TASK-US04-04 | US-04 | Architect / Frontend | `done` | impl + estático | `app/src/services/messagesService.ts` | Import estático do JSON, pool validado em cache | Consulta offline não observada em runtime (US04-P04) |
+| TASK-US05-01 | US-05 | Storyteller | `done` | doc + impl | `messages.json` | 18 mensagens originais, três tons, mais longa com 59 caracteres | — |
+| TASK-US05-02 | US-05 | Responsável pelo produto + Storyteller | `done` | doc | `messages.json`; DEC-018 | **Aprovação editorial humana integral em 03/11/2026**, incluindo as 4 mensagens inicialmente sinalizadas | Nenhuma pendência de curadoria para a base atual |
+| TASK-US05-03 | US-05 | QA + UX/UI | `todo` | — | `MessageCard.tsx` | — | Testar `msg-009`/`msg-013` (59 caracteres) e uma curta no card, em Android e com fonte ampliada |
+| TASK-US01-01 | US-01 | UX/UI | `review` | doc | `docs/UX_UI_Especificacao_Minima.md` §2 | Três estados da Home e wireframe especificados | Aprovação humana dos defaults propostos |
+| TASK-US01-02 | US-01 | Frontend Mobile | `done` | impl + estático | `app/src/screens/HomeScreen.tsx`, `App.tsx` | Home única com estados inicial, mensagem e falha segura | Não observada em execução; US01-P01…P03 e UX01 NOT RUN |
+| TASK-US01-03 | US-01 | QA | `done` | doc | `docs/QA_CHECKLIST.md` (US-01) | Critérios operacionais documentados desde o EP.04 | Execução NOT RUN |
+| TASK-US02-01 | US-02 | Frontend Mobile | `done` | impl + estático | `app/src/hooks/useOracleMessage.ts` | Hook sem rede, expõe `status`, `currentMessage`, `consult()` | Não observado em execução |
+| TASK-US02-02 | US-02 | Frontend Mobile | `done` | impl + estático | `app/src/utils/randomMessage.ts` | 3 checagens de sorteio PASS (pool vazio, limite superior, cobertura em 5000 sorteios) | — |
+| TASK-US02-03 | US-02 | Frontend Mobile + QA | `in-progress` | impl | `useOracleMessage.ts`, `ConsultButton.tsx` | Consulta atual é síncrona e sem I/O; estado consistente por construção | US02-N01 NOT RUN; proteção contra reentrância será necessária quando o histórico assíncrono entrar (RISK-017) |
+| TASK-US06-01 | US-06 | UX/UI | `review` | doc | `UX_UI_Especificacao_Minima.md` §3 | Card único 4:5, área capturável definida, Compartilhar fora da captura | Aprovação humana |
+| TASK-US06-02 | US-06 | Frontend Mobile | `in-progress` | impl + estático | `app/src/components/MessageCard.tsx` | Recebe mensagem por prop, não acessa dados, um template, cresce com fonte ampliada (`minHeight` 4:5) | Sem `forwardRef`/`ref` para captura; captura de imagem não pronta (depende de US-07) |
+| TASK-US06-03 | US-06 | QA + UX/UI | `todo` | — | — | — | Validar com mensagens reais em Android |
+| TASK-US07-01 | US-07 | Architect | `done` | doc | ADR-005, `ARCHITECTURE.md` §9 | Estratégia imagem + fallback texto | — |
+| TASK-US07-02 | US-07 | Frontend Mobile | `todo` | — | `shareService.ts`, `ShareButton.tsx` (inexistentes) | — | Nenhuma dependência de share/captura instalada |
+| TASK-US07-03 | US-07 | QA + Frontend | `todo` | — | — | — | Depende de TASK-US07-02 e de Android físico |
+| TASK-US09-01 | US-09 | Architect | `done` | doc | ADR-004 | Estratégia AsyncStorage, 10 itens, FIFO | `@react-native-async-storage/async-storage` **não instalado** |
+| TASK-US09-02 | US-09 | Frontend Mobile | `todo` | — | `historyService.ts`, `history.types.ts`, `useHistory.ts` (inexistentes) | — | Implementar com serialização de gravações |
+| TASK-US09-03 | US-09 | QA + PMO | `done` (método) | doc | `docs/QA_US09_Estrategia_Evidencia_EP05.md`; DEC-023 | Método principal e alternativo, fixtures, 10 casos US09-QA01…QA10 | **Execução**: 10 casos NOT RUN; depende de TASK-US09-02 |
+| TASK-US12-01 | US-12 | UX/UI | `review` | doc | `UX_UI_Especificacao_Minima.md` §4 | Tokens com contrastes calculados (não medidos em tela) | Identidade visual não aprovada |
+| TASK-US12-02 | US-12 | Frontend Mobile | `review` | impl + estático | `app/src/theme/theme.ts` | Tokens propostos aplicados em Home, botão e card | Reaplicar se TASK-US12-01 mudar; token `outline` aguarda o botão Compartilhar |
+| TASK-US12-03 | US-12 | QA + UX/UI | `todo` | — | — | — | Legibilidade/contraste em Android real |
+| TASK-US13-01 | US-13 | DevOps + Frontend | `todo` | — | `app/package.json`, `app/app.json` | Projeto Expo configurado | Dependências de share/histórico ausentes; app não observado rodando; sem configuração de build |
+| TASK-US13-02 | US-13 | DevOps | `todo` | — | `eas.json` (inexistente) | — | — |
+| TASK-US13-03 | US-13 | QA | `todo` | — | `QA_CHECKLIST.md` §9 | — | Build instalada em Android físico |
+
+## Estado por user story Must (EP.05)
+
+| US | Situação | Observação |
+|---|---|---|
+| US-04 | Implementada; verificação estática reproduzida | Runtime não observado |
+| US-05 | Conteúdo aprovado e integrado | Legibilidade no card e em Android pendente (TASK-US05-03) |
+| US-01 | Implementação inicial | Não observada em execução |
+| US-02 | Implementada | Não observada em execução; offline por construção, não testado |
+| US-06 | Parcial | Card implementado; captura e validação pendentes |
+| US-07 | Pendente | Nenhum código |
+| US-09 | Pendente | Estratégia de evidência documentada; nenhum código |
+| US-12 | Parcial | Tokens propostos aplicados; identidade não aprovada |
+| US-13 | Pendente | Sem `eas.json`, sem build |
+
+Should/Could (US-03, US-08, US-10, US-11) continuam fora da rodada e não foram iniciadas.
+
+---
+
 # 19. Resumo executivo
 
 O planejamento técnico necessário para **iniciar o scaffold Expo** está concluído: arquitetura, ADRs, tarefas, checklist QA e mapa de implementação já existem.
@@ -1291,3 +1371,15 @@ JSON local → Consultar → Card → Compartilhar → Histórico local → Buil
 ```
 
 **Não confundir scaffold concluído com MVP concluído, nem teste local com validação em dispositivo físico.** Should, Could e backlog futuro não são bloqueadores.
+
+**Atualização EP.05 (v5.0):** a primeira fatia (scaffold → tipos → JSON aprovado → `messagesService` → consulta offline na Home) existe como código e passou nas verificações estáticas, mas ainda não foi observada em execução.
+
+---
+
+# 20. Sequência técnica mínima recomendada para o EP.06
+
+1. **Primeira execução observada** — abrir a Home em emulador, Expo Go (se compatível com SDK 58) ou build de desenvolvimento; executar US01-P01…P03 e US02-P01…P03 (inclui modo avião) e registrar evidência. Fecha TASK-SCAFFOLD-01.
+2. **Spike de compartilhamento (US-07)** — `ref` no `MessageCard`, `shareService` + `ShareButton` fora da área capturável, dependências instaladas via `npx expo install`; validar cedo em Android físico com fallback em texto.
+3. **Histórico (US-09)** — `history.types.ts`, `historyService.ts`, integração na consulta com serialização de gravações; executar US09-QA01…QA10 conforme `docs/QA_US09_Estrategia_Evidencia_EP05.md`.
+4. **Decisões humanas pendentes** — aprovar ou ajustar os tokens visuais (TASK-US12-01) e confirmar a política de IDs duplicados (DEC-021).
+5. **Build interna (US-13)** — `eas.json`, build Android, `QA_CHECKLIST.md` §9 e decisão GO/NO-GO.

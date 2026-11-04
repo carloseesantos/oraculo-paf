@@ -65,27 +65,63 @@ O contrato de dados, as responsabilidades dos services/hooks e as dependências 
 
 ---
 
-## Estado confirmado do repositório (base v4.5, preparação do EP.05)
+## Marco EP.05 — Versão 5.0
 
-### Concluído como planejamento/documentação
+> **A versão 5.0 é o fechamento auditável do EP.05, não o término do desenvolvimento.** O MVP não está concluído, não há release publicado e nenhuma funcionalidade foi validada em Android físico ou observada em execução.
 
-- Contexto, hipótese, restrições e backlog consolidados.
-- Time de agentes definido em `docs/AGENTS.md`.
-- Revisão crítica do backlog em `docs/BACKLOG_REVIEW.md`.
-- Checklist de QA preparado em `docs/QA_CHECKLIST.md`.
-- Plano de tarefas em `docs/TASKS.md`.
-- Arquitetura, cinco ADRs iniciais e mapa técnico aprovados/documentados.
-- Decisões, riscos e diário de bordo registrados.
+- **Episódio:** EP.05 — Do backlog à execução: colocando nosso time de agentes IA para trabalhar.
+- **Data de consolidação:** 03/11/2026 (versão de entrada 4.5).
+- **Relatório completo:** `docs/EP05_EXECUTION_REPORT.md`.
 
-### Ainda não concluído como execução
+### Stack efetivamente utilizada
 
-- Base final curada em `app/src/data/messages.json` (Storyteller).
-- Especificação visual mínima da Home e do card (UX/UI).
-- Definição operacional de evidência para US-09 (QA, antes da validação).
-- Scaffold Expo em `app/` e arquivos de implementação.
-- Execução de testes, build interna e validação em Android físico.
+Expo SDK 58 (`expo@58.0.23`), React Native 0.88.1, React 19.3.0, TypeScript 6.0.3 (modo estrito), `react-native-safe-area-context` 5.11.1 e `expo-status-bar`. Sem Expo Router nem React Navigation: uma única Home. AsyncStorage, `expo-sharing`, biblioteca de captura e EAS ainda **não** estão instalados/configurados.
 
-**Importante:** os artefatos de planejamento existem, mas **a pasta** `app/` **ainda não consta na base v4.4**. Nenhum teste funcional ou build deve ser declarado realizado até existir evidência correspondente.
+### Entregáveis produzidos
+
+| Agente | Entregável | Situação |
+|---|---|---|
+| Storyteller | `app/src/data/messages.json` — 18 mensagens, 6 por tom | **Curadoria editorial aprovada** pelo responsável pelo produto (18/18, incluindo 4 inicialmente sinalizadas) e integrada |
+| UX/UI | `docs/UX_UI_Especificacao_Minima.md` | Especificação concluída; identidade visual pendente de aprovação |
+| QA | `docs/QA_US09_Estrategia_Evidencia_EP05.md` | Método de evidência da US-09 definido; 10 casos NOT RUN |
+| Frontend Mobile | Scaffold `app/` + primeira fatia Must | Implementado; verificado apenas de forma estática |
+| PMO | `docs/EP05_EXECUTION_REPORT.md` e atualização da documentação | Consolidado |
+
+### Funcionalidades implementadas (código, sem validação em execução)
+
+- **US-04** — JSON local tipado e validado; registros inválidos ficam fora do pool; pool vazio leva a um estado de falha segura.
+- **US-05** — base de 18 mensagens aprovadas integrada sem alterações.
+- **US-01** — Home única: título, subtítulo, botão Consultar e placeholder; sem login, onboarding ou navegação.
+- **US-02** — consulta aleatória local, sem rede.
+- **US-06 (parcial)** — `MessageCard` único e adaptável a fonte ampliada; ainda sem `ref` para captura.
+- **US-12 (parcial)** — tokens visuais propostos aplicados em `theme.ts`.
+
+**Não implementado:** US-07 (compartilhamento), US-09 (histórico local), US-13 (build EAS).
+
+### Verificações técnicas executadas
+
+Reproduzidas na consolidação, a partir de `app/`: `npm run typecheck` (exit 0), `npm run check:messages` (17/17), `npx expo-doctor` (20/20), `npx expo install --check` (dependências atualizadas) e export do bundle Android (634 módulos). O Frontend também relatou o Metro servindo o bundle de desenvolvimento (HTTP 200). Tudo isso é verificação estática ou de empacotamento.
+
+### Testes ainda pendentes
+
+Primeira execução do app (emulador, Expo Go ou build de desenvolvimento); cenários de UI de US-01, US-02, US-05, US-06 e US-12; casos US09-QA01…QA10; compartilhamento em Android físico; acessibilidade com fonte ampliada; seção 9 (go/no-go) do `docs/QA_CHECKLIST.md`.
+
+### Riscos principais
+
+- Interface nunca observada em execução (RISK-016).
+- Compartilhamento, núcleo da hipótese, ainda sem código (RISK-009).
+- Histórico ainda sem código; reentrância nas gravações assíncronas futuras (RISK-017).
+- Compatibilidade do SDK 58 com o Expo Go do aparelho não verificada (RISK-014).
+- 5 vulnerabilidades moderadas no tooling do Expo; a correção `--force` rebaixaria o SDK e não foi aplicada (RISK-015).
+- Identidade visual pendente de aprovação (RISK-008) e legibilidade/captura com fonte ampliada (RISK-018).
+
+### Próximos passos (EP.06)
+
+1. Abrir o app e executar os cenários iniciais de US-01 e US-02, com registro de evidência.
+2. Spike de compartilhamento (US-07) em Android físico, com fallback em texto.
+3. Histórico local (US-09) e execução dos 10 casos de QA.
+4. Decisões humanas: identidade visual e política de IDs duplicados.
+5. `eas.json`, build interna e checklist go/no-go (US-13).
 
 ---
 
@@ -94,42 +130,71 @@ O contrato de dados, as responsabilidades dos services/hooks e as dependências 
 ```text
 oraculo-paf/
   README.md
+  app.version                  # versão do repositório/série (5.0)
   docs/
     PROJECT_CONTEXT.md
     AGENTS.md
     BACKLOG.md
     BACKLOG_REVIEW.md
     QA_CHECKLIST.md
+    QA_US09_Estrategia_Evidencia_EP05.md
+    UX_UI_Especificacao_Minima.md
     TASKS.md
     ARCHITECTURE.md
     IMPLEMENTATION_MAP.md
     DECISIONS.md
     RISKS.md
     DIARY.md
+    EP05_EXECUTION_REPORT.md
     adr/
       ADR-001-stack-expo-react-native.md
       ADR-002-json-local-no-mvp.md
       ADR-003-sem-backend-no-mvp.md
       ADR-004-historico-local-limitado.md
       ADR-005-compartilhamento-card.md
+  app/                         # projeto Expo SDK 58 (versão técnica 1.0.0)
+    .gitignore
+    App.tsx
+    index.ts
+    app.json
+    package.json
+    package-lock.json
+    tsconfig.json
+    assets/                    # ícones e splash padrão do template
+    scripts/
+      check-messages.mjs
+    src/
+      components/
+        ConsultButton.tsx
+        MessageCard.tsx
+      data/
+        messages.json
+      hooks/
+        useOracleMessage.ts
+      screens/
+        HomeScreen.tsx
+      services/
+        messagesService.ts
+      theme/
+        theme.ts
+      types/
+        message.types.ts
+      utils/
+        randomMessage.ts
+        validateMessage.ts
 ```
 
-Estrutura técnica planejada (ainda não implementada nesta base):
+Ainda não existem: `app/eas.json`, `history.types.ts`, `historyService.ts`, `shareService.ts`, `useHistory.ts`, `ShareButton.tsx`. A existência de um arquivo não prova funcionalidade validada. `node_modules/` e `.expo/` são locais e ignorados pelo Git.
 
-```text
-app/
-  src/
-    components/
-    screens/
-    data/
-    services/
-    hooks/
-    utils/
-    theme/
-    types/
+### Executar as verificações locais
+
+```bash
+cd app
+npm ci
+npm run typecheck
+npm run check:messages   # requer Node >= 22.18
+npx expo start
 ```
-
-Arquivos técnicos detalhados estão mapeados em `docs/IMPLEMENTATION_MAP.md`. As pastas não devem ser usadas como prova de funcionalidade pronta.
 
 ---
 
@@ -142,13 +207,17 @@ Arquivos técnicos detalhados estão mapeados em `docs/IMPLEMENTATION_MAP.md`. A
 | `docs/BACKLOG.md` | User stories, MoSCoW e critérios de aceite |
 | `docs/BACKLOG_REVIEW.md` | Revisão crítica já realizada pelo PO |
 | `docs/QA_CHECKLIST.md` | Cenários, riscos e checklist go/no-go |
+| `docs/QA_US09_Estrategia_Evidencia_EP05.md` | Método de evidência da US-09 e casos US09-QA01…QA10 |
+| `docs/UX_UI_Especificacao_Minima.md` | Estados da Home, card único e tokens visuais mínimos |
 | `docs/TASKS.md` | Tarefas, dependências e acompanhamento da execução |
 | `docs/ARCHITECTURE.md` | Arquitetura e contratos de dados |
 | `docs/IMPLEMENTATION_MAP.md` | Mapeamento de histórias/tarefas para arquivos e ordem técnica |
 | `docs/DECISIONS.md` | Decisões aprovadas |
 | `docs/RISKS.md` | Riscos e mitigação |
 | `docs/DIARY.md` | Histórico real de execução e aprendizados |
+| `docs/EP05_EXECUTION_REPORT.md` | Relatório consolidado do EP.05 e handoff editorial |
 | `docs/adr/` | ADR-001 a ADR-005, já existentes e aprovados |
+| `app.version` | Versão do repositório e da série de episódios |
 
 O conteúdo histórico de revisões e diários não deve ser reescrito para parecer que atividades futuras já aconteceram.
 
@@ -169,17 +238,15 @@ O conteúdo histórico de revisões e diários não deve ser reescrito para pare
 
 ChatGPT e Cursor são ferramentas complementares. A seleção deve seguir a tarefa: análise/curadoria/gestão no ChatGPT; leitura e alteração efetiva de arquivos/código no Cursor, quando aplicável. Saídas de agentes devem ser revisadas antes da incorporação.
 
-### Sequência operacional do EP.05
+### Sequência operacional do EP.05 (executada em 03/11/2026)
 
-1. **Storyteller:** gerar e curar pelo menos 15 mensagens válidas, com no mínimo cinco por tom, seguindo o schema existente.
-2. **UX/UI:** definir Home, card único e tokens visuais mínimos.
-3. **QA:** escolher o método de evidência técnica de US-09, sem tornar US-10 obrigatória; testes reais ocorrerão depois da implementação.
-4. **Frontend Mobile:** iniciar `TASK-SCAFFOLD-01` no Cursor. O scaffold pode começar em paralelo às três preparações anteriores; integrar os artefatos aprovados assim que disponíveis e avançar para a primeira consulta offline.
-5. **PMO:** consolidar somente entregas e resultados efetivamente observados; atualizar status, decisões e diário de bordo.
+1. **Storyteller:** gerou 18 mensagens (seis por tom) no schema existente; o responsável pelo produto aprovou todas.
+2. **UX/UI:** definiu Home, card único e tokens visuais mínimos.
+3. **QA:** escolheu o método de evidência técnica da US-09, sem tornar a US-10 obrigatória.
+4. **Frontend Mobile:** executou `TASK-SCAFFOLD-01` no Cursor, integrou as mensagens aprovadas e implementou a consulta offline na Home.
+5. **PMO:** auditou o repositório, reproduziu as verificações e consolidou status, decisões, riscos, diário e versão 5.0.
 
-**Não exigir que Storyteller, UX/UI e QA terminem para iniciar apenas o scaffold.** São dependências da integração/validação correspondente, não da criação do projeto Expo.
-
-A ordem de implementação Must, os critérios de pronto e as dependências detalhadas continuam em `docs/TASKS.md` e `docs/IMPLEMENTATION_MAP.md`.
+A ordem de implementação Must, os critérios de pronto e as dependências detalhadas continuam em `docs/TASKS.md` (status EP.05 na seção 18.1; sequência do EP.06 na seção 20) e `docs/IMPLEMENTATION_MAP.md`.
 
 ---
 
@@ -218,7 +285,7 @@ Regras operacionais:
 
 ## Série editorial
 
-A série **Do Zero ao Produto**, da newsletter **Papo de Gerente**, relata prompts, respostas, decisões, erros, código e validações reais. O EP.04 cobriu a transformação do backlog em critérios testáveis, tarefas e mapa técnico. O EP.05 acompanhará a passagem à execução, com o board mínimo como instrumento de gestão e não como finalidade.
+A série **Do Zero ao Produto**, da newsletter **Papo de Gerente**, relata prompts, respostas, decisões, erros, código e validações reais. O EP.04 cobriu a transformação do backlog em critérios testáveis, tarefas e mapa técnico. O EP.05 registrou a passagem à execução: quatro agentes especializados transformaram o backlog em uma primeira implementação, e ficaram explícitas as decisões, riscos e validações que ainda exigem atuação humana. O EP.06 começa pela primeira execução observada do app e pelo compartilhamento em Android.
 
 **Frase guia:** “Antes de acelerar com IA, organize o caminho.”
 

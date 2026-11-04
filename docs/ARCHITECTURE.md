@@ -523,7 +523,7 @@ Novos riscos descobertos na implementação devem voltar para `docs/RISKS.md`, n
 - [x] Estratégia JSON, histórico e share
 - [x] Lista do que não instalar
 - [x] ADRs iniciais criados em `docs/adr/`
-- [ ] Scaffold Expo criado na pasta `app/` (primeira tarefa do Frontend Mobile Agent)
+- [x] Scaffold Expo criado na pasta `app/` (primeira tarefa do Frontend Mobile Agent) — EP.05, 03/11/2026: Expo SDK 58, sem Expo Router (DEC-019, DEC-020); execução em runtime ainda não observada (TASK-SCAFFOLD-01 em `review`)
 
 ## 12.2 Pode evoluir depois
 

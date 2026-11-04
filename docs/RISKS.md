@@ -72,6 +72,10 @@ UX/UI Agent + Frontend Mobile Agent.
 
 Ativo.
 
+## Atualização EP.05 (03/11/2026)
+
+O card implementado é mínimo (fundo sólido, marca discreta, mensagem; um template). A captura de imagem ainda não existe e o card não expõe `ref`. O risco continua ativo até o compartilhamento funcionar em Android.
+
 ---
 
 # RISK-002 — Histórico local inflar em escopo
@@ -197,7 +201,13 @@ Storyteller Agent + Product Owner Agent.
 
 ## Status
 
-Ativo.
+Mitigado parcialmente.
+
+## Atualização EP.05 (03/11/2026)
+
+A curadoria editorial foi **concluída**: 18 mensagens originais, seis por tom, aprovadas integralmente pelo responsável pelo produto, incluindo as quatro inicialmente sinalizadas (DEC-018). Não há pendência editorial na base atual.
+
+O que resta deste risco é o teste da hipótese em si: só o teste interno com usuários mostrará se as mensagens geram identificação e compartilhamento. A legibilidade no card é tratada em RISK-018.
 
 ---
 
@@ -293,6 +303,10 @@ UX/UI Agent.
 
 Ativo.
 
+## Atualização EP.05 (03/11/2026)
+
+O UX/UI Agent entregou tokens mínimos e o Frontend os aplicou como defaults provisórios (DEC-024). A **aprovação humana da identidade visual continua pendente**. Mitigação: aprovar ou ajustar os tokens em uma única rodada, sem bloquear a US-07.
+
 ---
 
 # RISK-009 — Compartilhamento funcionar mal em dispositivo real
@@ -324,6 +338,10 @@ Frontend Mobile Agent + QA Agent.
 ## Status
 
 Ativo.
+
+## Atualização EP.05 (03/11/2026)
+
+O compartilhamento (US-07) **não foi implementado**: não há `shareService`, `ShareButton`, `expo-sharing` nem biblioteca de captura instaladas. O risco não diminuiu; a probabilidade permanece média e o spike em Android físico passa a ser o primeiro item funcional do EP.06.
 
 ---
 
@@ -393,13 +411,17 @@ Software Architect Agent + PMO Agent.
 
 ## Status
 
-Mitigado parcialmente.
+Mitigado.
 
 ## Observação
 
 O risco foi reduzido com a criação de `ARCHITECTURE.md`, ADRs, `TASKS.md` e `IMPLEMENTATION_MAP.md`.
 
 Ainda será encerrado totalmente após o scaffold seguir a estrutura proposta e não iniciar implementação fora da cadeia Must.
+
+## Atualização EP.05 (03/11/2026)
+
+O scaffold seguiu a árvore de `IMPLEMENTATION_MAP.md` e a implementação ficou restrita à cadeia Must (tipos → JSON → service → sorteio → hook → Home → card → tema). Nenhuma navegação, backend ou funcionalidade fora do MVP foi adicionada. Status alterado para **Mitigado**; não foi encerrado porque a regra continua valendo para as próximas implementações.
 
 ---
 
@@ -464,6 +486,163 @@ Storyteller Agent + Frontend Mobile Agent + QA Agent.
 
 ## Status
 
+Mitigado parcialmente.
+
+## Atualização EP.05 (03/11/2026)
+
+- Schema tipado (`message.types.ts`) e validação em `validateMessage.ts` implementados; registros inválidos ficam fora do pool e pool vazio leva a um estado seguro na Home.
+- `npm run check:messages`: 17/17 checagens PASS, reproduzidas pelo PMO (18 válidas, 0 rejeitadas, mais longa com 59 caracteres).
+- Ainda pendente: observar o estado de falha segura em runtime (US04-E03) e confirmar a política de IDs duplicados (DEC-021, provisória).
+
+---
+
+# RISK-014 — Expo SDK 58 incompatível com o Expo Go do Android físico
+
+## Descrição
+
+O projeto usa Expo SDK 58 (o gerador anunciou SDK 57 e instalou SDK 58). Não foi verificado se o Expo Go instalado no Android físico de teste suporta o SDK 58. Se não suportar, o teste rápido em aparelho via Expo Go não será possível.
+
+## Impacto
+
+Médio.
+
+## Probabilidade
+
+Média.
+
+## Plano de mitigação
+
+- Verificar a versão do Expo Go no aparelho antes do primeiro teste.
+- Se incompatível, usar build de desenvolvimento ou build interna EAS (US-13), em vez de rebaixar o SDK.
+- Registrar o resultado em `DIARY.md` e revisar DEC-019.
+
+## Dono sugerido
+
+Frontend Mobile Agent + DevOps / Build Agent.
+
+## Status
+
+Ativo.
+
+---
+
+# RISK-015 — Vulnerabilidades moderadas nas ferramentas de desenvolvimento do Expo
+
+## Descrição
+
+`npm audit` aponta 5 vulnerabilidades moderadas (`glob` e `minimatch`, via `@expo/cli` e `@expo/fingerprint`). A correção automática `npm audit fix --force` instalaria `expo@53.0.11`, rebaixando o SDK.
+
+## Impacto
+
+Baixo — afeta ferramentas de desenvolvimento e build, não o conteúdo do app.
+
+## Probabilidade
+
+Baixa.
+
+## Plano de mitigação
+
+- Não executar `npm audit fix --force` (DEC-019).
+- Reavaliar com `npm audit` e `npx expo install --check` a cada atualização de patch do SDK 58.
+- Não executar scripts de fontes desconhecidas no ambiente de desenvolvimento.
+
+## Dono sugerido
+
+Frontend Mobile Agent + DevOps / Build Agent.
+
+## Status
+
+Ativo (monitorado).
+
+---
+
+# RISK-016 — Implementação sem validação em runtime
+
+## Descrição
+
+Todo o código do EP.05 foi verificado apenas de forma estática (typecheck, script de checagens, `expo-doctor`, export do bundle, Metro servindo o bundle). A interface nunca foi observada em execução: não havia `adb`, emulador ou Android físico disponível. Problemas de layout, safe area, fonte ampliada ou comportamento em toque podem existir sem serem detectados.
+
+## Impacto
+
+Alto.
+
+## Probabilidade
+
+Média.
+
+## Plano de mitigação
+
+- Primeira tarefa do EP.06: abrir a Home em emulador, Expo Go ou build de desenvolvimento e executar US01-P01…P03 e US02-P01…P03.
+- Não marcar TASK-SCAFFOLD-01 nem histórias como validadas sem essa evidência.
+- Registrar capturas de tela e ambiente usado.
+
+## Dono sugerido
+
+Frontend Mobile Agent + QA Agent.
+
+## Status
+
+Ativo.
+
+---
+
+# RISK-017 — Persistência da US-09 não implementada e reentrância em operações assíncronas
+
+## Descrição
+
+A US-09 (Must) não tem código: `historyService`, `history.types.ts`, `useHistory` e a dependência AsyncStorage ainda não existem. Quando o salvamento assíncrono entrar, toques rápidos em Consultar podem disparar gravações concorrentes do tipo ler-modificar-gravar e perder eventos.
+
+## Impacto
+
+Alto — sem evidência de persistência, limite 10 e FIFO, o GO do MVP fica bloqueado.
+
+## Probabilidade
+
+Média.
+
+## Plano de mitigação
+
+- Implementar o serviço seguindo ADR-004 e o contrato `HistoryEntry`.
+- Serializar gravações ou proteger a ação contra reentrância.
+- Executar US09-QA01…QA10 (inclui QA10, consultas rápidas) e US02-N01.
+- Não deduplicar por `messageId` (DEC-023).
+
+## Dono sugerido
+
+Frontend Mobile Agent + QA Agent.
+
+## Status
+
+Ativo.
+
+---
+
+# RISK-018 — Legibilidade e captura do card com fonte ampliada
+
+## Descrição
+
+O card usa texto de 26 sp em formato 4:5 e cresce verticalmente quando a fonte do sistema é ampliada, para não cortar a mensagem. As mensagens mais longas da base têm 59 caracteres (`msg-009`, `msg-013`). Com fonte ampliada, o card pode sair da proporção prevista e a imagem capturada para compartilhamento pode ficar desproporcional ou exigir rolagem.
+
+## Impacto
+
+Médio.
+
+## Probabilidade
+
+Média.
+
+## Plano de mitigação
+
+- Testar `msg-009`, `msg-013` e uma mensagem curta em 100%, 130% e 150% de fonte, em larguras próximas de 320, 360 e 412 dp.
+- Validar a captura do card nesses cenários durante o spike da US-07.
+- Não truncar texto nem reduzir a escala configurada pelo usuário.
+
+## Dono sugerido
+
+UX/UI Agent + Frontend Mobile Agent + QA Agent.
+
+## Status
+
 Ativo.
 
 ---
@@ -476,15 +655,22 @@ Ativo.
 | RISK-002 | Histórico inflar em escopo                 | Médio   | Alta          | Product Owner      | Ativo  |
 | RISK-003 | “Só mais uma tela” virar padrão            | Alto    | Alta          | PO + PMO           | Ativo  |
 | RISK-004 | Backend/analytics entrarem cedo            | Alto    | Média         | PO + Arquiteto     | Ativo  |
-| RISK-005 | Pool de mensagens pobre                    | Alto    | Alta          | Storyteller + PO   | Ativo  |
+| RISK-005 | Pool de mensagens pobre                    | Alto    | Alta          | Storyteller + PO   | Mitigado parcialmente (curadoria concluída; hipótese ainda não testada) |
 | RISK-006 | Visual/animação prejudicar performance     | Médio   | Média         | UX + Frontend + QA | Ativo  |
 | RISK-007 | IA generativa parecer obrigatória          | Alto    | Média         | PO + PMO           | Ativo  |
-| RISK-008 | Identidade visual atrasar validação        | Médio   | Média         | UX/UI              | Ativo  |
-| RISK-009 | Compartilhamento falhar em device real     | Alto    | Média         | Frontend + QA      | Ativo  |
-| RISK-010 | Backlog perder foco                        | Alto    | Alta          | PMO + PO           | Ativo  |
-| RISK-011 | Código começar antes da arquitetura mínima | Médio   | Média         | Arquiteto + PMO    | Mitigado parcialmente |
+| RISK-008 | Identidade visual atrasar validação        | Médio   | Média         | UX/UI              | Ativo (identidade pendente de aprovação) |
+| RISK-009 | Compartilhamento falhar em device real     | Alto    | Média         | Frontend + QA      | Ativo (US-07 não implementada) |
+| RISK-010 | Backlog perder foco                        | Alto    | Alta          | PMO + PO           | Mitigado parcialmente |
+| RISK-011 | Código começar antes da arquitetura mínima | Médio   | Média         | Arquiteto + PMO    | Mitigado |
 | RISK-012 | Documentação virar burocracia              | Médio   | Média         | PMO                | Ativo  |
-| RISK-013 | JSON local inválido quebrar experiência | Médio | Média | Storyteller + Frontend + QA | Ativo |
+| RISK-013 | JSON local inválido quebrar experiência | Médio | Média | Storyteller + Frontend + QA | Mitigado parcialmente |
+| RISK-014 | SDK 58 incompatível com Expo Go no Android | Médio | Média | Frontend + DevOps | Ativo |
+| RISK-015 | Vulnerabilidades moderadas no tooling Expo | Baixo | Baixa | Frontend + DevOps | Ativo (monitorado) |
+| RISK-016 | Implementação sem validação em runtime | Alto | Média | Frontend + QA | Ativo |
+| RISK-017 | US-09 não implementada / reentrância assíncrona | Alto | Média | Frontend + QA | Ativo |
+| RISK-018 | Legibilidade e captura com fonte ampliada | Médio | Média | UX + Frontend + QA | Ativo |
+
+A linha da RISK-010 foi alinhada ao status já registrado na seção do próprio risco ("Mitigado parcialmente").
 
 ---
 
@@ -504,3 +690,7 @@ A próxima revisão deve verificar se:
 - riscos de compartilhamento precisam ser reclassificados;
 - surgiram riscos técnicos durante o scaffold Expo;
 - algum risco deve virar tarefa de QA.
+
+**Revisão realizada no EP.05 (03/11/2026):** RISK-011 passou a Mitigado; RISK-005 e RISK-013 a Mitigado parcialmente; RISK-001, RISK-008 e RISK-009 receberam atualização sem mudança de status; RISK-014 a RISK-018 foram criados a partir dos problemas reais do scaffold.
+
+**Próxima revisão:** após a primeira execução observada do app (RISK-016), o spike de compartilhamento em Android (RISK-009, RISK-018) e a implementação do histórico (RISK-017).

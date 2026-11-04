@@ -412,6 +412,54 @@ Próximo passo:
 
 ---
 
+## 2026-11-03 — EP.05: do backlog à execução (consolidação v5.0)
+
+### Contexto
+
+**Objetivo da rodada:** sair do planejamento e chegar à primeira implementação técnica, colocando quatro agentes especializados para trabalhar a partir do backlog, do mapa técnico e dos ADRs.
+
+**Estado de entrada (v4.5):** planejamento completo (backlog revisado, tarefas, arquitetura, ADR-001 a ADR-005, mapa de implementação, checklist de QA). Não existia scaffold em `app/`, nem base curada de mensagens, especificação visual ou método de evidência da US-09.
+
+**Agentes envolvidos:** Storyteller, UX/UI, QA e Frontend Mobile (Cursor). O PMO / Project Manager Agent auditou e consolidou os resultados.
+
+### Execução
+
+- **Storyteller Agent** — produziu 18 mensagens originais, seis por tom (poética, mística, humorística), no schema de `ARCHITECTURE.md`. O JSON passou por validação estrutural programática (contagem, formato, unicidade). O agente sinalizou quatro mensagens para atenção editorial. A data exata da execução não está registrada nos artefatos; o arquivo entrou no Git em 03/11/2026 (commit `ea9f2bc`).
+- **Aprovação humana** — em 03/11/2026, o responsável pelo produto revisou e aprovou as 18 mensagens, incluindo as quatro sinalizadas, sem substituições (DEC-018). A curadoria editorial da base atual está concluída.
+- **UX/UI Agent** — entregou `docs/UX_UI_Especificacao_Minima.md`: três estados da Home (inicial, mensagem, falha segura), um único `MessageCard` 4:5 com área capturável sem botões, Compartilhar fora da captura, tokens mínimos com contrastes calculados e orientações de acessibilidade. Defaults propostos, pendentes de aprovação humana.
+- **QA Agent** — entregou `docs/QA_US09_Estrategia_Evidencia_EP05.md`: método de evidência da US-09 com AsyncStorage real em desenvolvimento, fixtures determinísticas e dez casos (US09-QA01…QA10), todos NOT RUN. Identificou que o histórico registra **eventos de consulta**, não mensagens únicas.
+- **Frontend Mobile Agent (Cursor)** — gerou o template `blank-typescript` fora do repositório e copiou para `app/` sem `.git` aninhado, sem `LICENSE` e sem o `AGENTS.md` do template (que impunha Expo Router). Implementou tipos, validação, `messagesService`, sorteio, `useOracleMessage`, `HomeScreen` com três estados, `ConsultButton`, `MessageCard` e `theme.ts` com os tokens propostos. Adicionou apenas `react-native-safe-area-context`. Não implementou US-07, US-09 nem US-13. Commit `353b898`.
+- **PMO** — confrontou os relatos com o repositório local, reexecutou as verificações estáticas, atualizou `TASKS.md`, `DECISIONS.md`, `RISKS.md`, `QA_CHECKLIST.md`, `ARCHITECTURE.md`, `IMPLEMENTATION_MAP.md` e `README.md`, criou `docs/EP05_EXECUTION_REPORT.md` e promoveu `app.version` para 5.0.
+
+**Verificações reproduzidas pelo PMO:** `npm run typecheck` (exit 0), `npm run check:messages` (17/17), `npx expo-doctor` (20/20), `npx expo install --check` (dependências atualizadas), export Android em diretório temporário (634 módulos). Metro servindo o bundle de desenvolvimento (HTTP 200) foi relatado pelo Frontend e não reexecutado.
+
+### Problemas encontrados
+
+- O gerador anunciou template SDK 57 e instalou SDK 58. O SDK 58 foi mantido (DEC-019); a compatibilidade com o Expo Go do Android físico não foi verificada (RISK-014).
+- `npm audit`: 5 vulnerabilidades moderadas no tooling do Expo. A correção `--force` instalaria `expo@53.0.11` e foi recusada (RISK-015).
+- Não havia `adb`, emulador nem Android físico disponível: a interface nunca foi vista rodando (RISK-016).
+- Pendentes de decisão humana: aprovação da identidade visual (DEC-024) e da política de IDs duplicados (DEC-021).
+- Divergência documental corrigida: o cenário US09-P02 exigia "10 mensagens distintas (IDs)"; o requisito é de dez eventos de consulta.
+
+### Aprendizados
+
+- Planejar, implementar e validar são estados diferentes. O EP.05 entregou código e verificação estática, não validação em execução.
+- A curadoria humana funcionou como portão antes da integração: o Storyteller entregou um arquivo tecnicamente verificável, e a aprovação do responsável pelo produto concluiu a curadoria.
+- Avaliações estáticas (typecheck, scripts, bundle) não detectam problemas de layout, toque ou compatibilidade com o aparelho.
+- A rastreabilidade entre agentes permitiu identificar a divergência SDK 57/58 e a regra de eventos da US-09 antes que virassem retrabalho.
+
+### Decisão tomada
+
+Consolidar o EP.05 na versão documental 5.0 (DEC-025), sem declarar MVP concluído nem validação em Android.
+
+### Próximo passo
+
+1. Abrir o app em emulador, Expo Go ou build de desenvolvimento e executar os cenários iniciais de US-01/US-02.
+2. Spike de compartilhamento (US-07) em Android físico.
+3. Implementar o histórico (US-09) e executar US09-QA01…QA10.
+
+---
+
 # Status atual da jornada
 
 ✅ Problema definido
@@ -427,4 +475,9 @@ Próximo passo:
 ✅ Arquitetura inicial do MVP (`docs/ARCHITECTURE.md`)
 ✅ Checklist de QA Must (`docs/QA_CHECKLIST.md`)
 ✅ Mapa de implementação (`docs/IMPLEMENTATION_MAP.md`)
-⏳ Próximo passo: Storyteller (JSON) + UX mínima em paralelo; Frontend inicia scaffold Expo
+✅ Base de 18 mensagens aprovada pelo responsável pelo produto (EP.05)
+✅ Especificação UX/UI mínima (`docs/UX_UI_Especificacao_Minima.md`) — pendente de aprovação humana
+✅ Estratégia de evidência da US-09 (`docs/QA_US09_Estrategia_Evidencia_EP05.md`) — casos NOT RUN
+✅ Scaffold Expo SDK 58 + primeira fatia Must (consulta offline na Home) — apenas verificação estática
+✅ Consolidação EP.05 e versão documental 5.0 (`docs/EP05_EXECUTION_REPORT.md`)
+⏳ Próximo passo (EP.06): primeira execução observada do app, spike de compartilhamento em Android e histórico local

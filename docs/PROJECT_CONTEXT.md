@@ -523,6 +523,8 @@ Sempre que possível, agentes no Cursor devem ler:
 
 ## 17. Roadmap editorial da série
 
+> Roteiro editorial original, preservado como registro. A execução real divergiu dos títulos planejados: o EP.05 registrado no repositório é "Do backlog à execução: colocando nosso time de agentes IA para trabalhar", com a primeira implementação técnica (ver `README.md` e `docs/EP05_EXECUTION_REPORT.md`). Não se deve inferir deste roteiro o conteúdo dos episódios seguintes.
+
 ### EP.00 — Do Zero ao Produto
 
 Apresentação da série e da proposta de construir um app real com IA.
@@ -578,6 +580,8 @@ Fechamento da série, aprendizados e próximos passos.
 ---
 
 ## 18. Diário de bordo atual
+
+> Fotografia da época de criação deste documento (após o EP.02). O status atual da jornada está em `docs/DIARY.md`.
 
 Status da jornada:
 

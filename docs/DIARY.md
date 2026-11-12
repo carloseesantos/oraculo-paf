@@ -258,6 +258,8 @@ Projeto passa a ter histórico, decisões e riscos registrados de forma simples.
 
 # Próximos passos recomendados
 
+> Registro histórico da Etapa 6 (antes da arquitetura). Os passos abaixo já foram executados. A situação atual está na entrada mais recente e em "Status atual da jornada", no fim deste documento.
+
 ## Próximo agente
 
 Executar o **Software Architect Agent**.
@@ -460,6 +462,48 @@ Consolidar o EP.05 na versão documental 5.0 (DEC-025), sem declarar MVP conclu�
 
 ---
 
+## 2026-11-12 — Auditoria PMO do EP.05 e handoff editorial
+
+### Objetivo
+
+Auditar a execução real do EP.05 já consolidada na versão 5.0, reconciliar a documentação de gestão com o Git e o código, e preparar o insumo do capítulo 5 da newsletter. Sem implementar funcionalidades e sem alterar a versão.
+
+### Evidências
+
+- **Git:** branch `main` sincronizada com `origin/main`; HEAD `2ce3ffa`; tag anotada `ep05-v5.0` local e no remoto; working tree limpo antes da auditoria. Commits `ea9f2bc`, `353b898` e `2ce3ffa` confirmados com `git show` (todos de 03/11/2026).
+- **Integridade:** `messages.json` inalterado desde `ea9f2bc`; `app/` inalterado desde `353b898`.
+- **Verificações (Node v24.13.0, npm 11.6.2):** `check:messages` 17/17 (rc 0); `typecheck` rc 0; export Android 634 módulos (rc 0); `expo install --check` rc 1 (patches `expo ~58.0.25` e `expo-status-bar ~58.0.5` esperados). `expo-doctor` e `npm audit` não executados.
+- **Ambiente:** sem `adb`, emulador ou `eas`. Nenhum teste em runtime ou Android.
+
+### Alterações
+
+- `docs/EP05_EXECUTION_REPORT.md`: seção 12 (auditoria posterior), preservando as seções 1 a 11.
+- `docs/EP05_EDITORIAL_HANDOFF.md`: criado.
+- `docs/TASKS.md`: §18.2 com estados explícitos; TASK-US09-03 como estratégia documentada e execução pendente.
+- `docs/DECISIONS.md`: quadro de origem das decisões DEC-018 a DEC-025, sem novos IDs.
+- `docs/RISKS.md`: atualização de RISK-015 (patches) e RISK-016; registro da revisão.
+- Notas mínimas de contexto em `QA_CHECKLIST.md`, `ARCHITECTURE.md`, `IMPLEMENTATION_MAP.md`, `BACKLOG.md`, `PROJECT_CONTEXT.md`, `README.md` e neste diário.
+
+### Achados
+
+- O relatório original dizia que a consolidação estava sem commit nem tag; ela foi versionada (`2ce3ffa`, `ep05-v5.0`) e publicada no remoto.
+- ADR-004 e DEC-008 falam em "10 mensagens"; DEC-023 fixa "10 eventos de consulta". Os textos foram preservados e a interpretação foi registrada.
+- Só DEC-018 e DEC-025 têm aprovação humana registrada; DEC-019 a DEC-023 são decisões técnicas de agentes.
+- Os patches do SDK 58 ficaram desatualizados depois de 03/11.
+
+### Decisão tomada
+
+Nenhuma decisão de produto ou técnica nova. `app.version` permanece 5.0.
+
+### Próximo passo
+
+1. Revisão humana do diff desta auditoria e decisão sobre o commit.
+2. Ratificar DEC-019 a DEC-023; decidir identidade visual (DEC-024) e política de IDs duplicados (DEC-021).
+3. Autorizar ou recusar o alinhamento de patches do SDK 58.
+4. EP.06: primeira execução observada, spike de compartilhamento (US-07), histórico (US-09) e build interna (US-13).
+
+---
+
 # Status atual da jornada
 
 ✅ Problema definido
@@ -479,5 +523,6 @@ Consolidar o EP.05 na versão documental 5.0 (DEC-025), sem declarar MVP conclu�
 ✅ Especificação UX/UI mínima (`docs/UX_UI_Especificacao_Minima.md`) — pendente de aprovação humana
 ✅ Estratégia de evidência da US-09 (`docs/QA_US09_Estrategia_Evidencia_EP05.md`) — casos NOT RUN
 ✅ Scaffold Expo SDK 58 + primeira fatia Must (consulta offline na Home) — apenas verificação estática
-✅ Consolidação EP.05 e versão documental 5.0 (`docs/EP05_EXECUTION_REPORT.md`)
+✅ Consolidação EP.05 e versão documental 5.0 (`docs/EP05_EXECUTION_REPORT.md`; commit `2ce3ffa`, tag `ep05-v5.0`)
+✅ Auditoria pós-consolidação e handoff editorial do EP.05 (12/11/2026, `docs/EP05_EDITORIAL_HANDOFF.md`)
 ⏳ Próximo passo (EP.06): primeira execução observada do app, spike de compartilhamento em Android e histórico local

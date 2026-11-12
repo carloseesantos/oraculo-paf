@@ -5,6 +5,7 @@
 - **Consolidação:** PMO / Project Manager Agent (Cursor) · **Data:** 03/11/2026
 - **Versão de entrada:** 4.5 · **Versão consolidada:** 5.0 (`app.version`)
 - **Referência:** repositório local `oraculo-paf`, branch `main`, commits `ea9f2bc` e `353b898` + alterações documentais desta consolidação (não commitadas no momento da redação)
+- **Auditoria posterior:** 12/11/2026 — ver seção 12. As seções 1 a 11 são o registro original de 03/11/2026 e foram preservadas; correções e verificações posteriores estão somente na seção 12. A consolidação foi depois versionada no commit `2ce3ffa` com a tag `ep05-v5.0`. O material editorial completo do capítulo 5 está em `docs/EP05_EDITORIAL_HANDOFF.md`.
 
 ---
 
@@ -409,3 +410,82 @@ A versão documental 5.0 é válida localmente independentemente da tag.
 ### 11.6 Pendências que seguem para o EP.06
 
 Execução observada do app; US-07; US-09 com os 10 casos do QA; aprovação da identidade visual; confirmação da política de IDs duplicados; verificação do Expo Go com SDK 58; US-13 e seção 9 do checklist.
+
+---
+
+## 12. Auditoria posterior (12/11/2026)
+
+Auditoria do PMO / Project Manager Agent (Cursor) sobre o repositório local, nove dias após a consolidação. Objetivo: confirmar o registro original contra o Git e o código, reexecutar as verificações disponíveis e preparar o handoff editorial. Nenhum código, JSON, dependência, configuração Expo ou ADR foi alterado.
+
+### 12.1 Estado do Git confirmado
+
+| Item | Valor observado |
+|---|---|
+| Diretório | `/home/ceugenio/workspace/oraculo-paf` |
+| Branch | `main`, sincronizada com `origin/main` (`git status -sb`) |
+| HEAD | `2ce3ffa` — `docs(ep05): consolidate EP.05 and promote app.version to 5.0` (03/11/2026 22:02:05 -0300) |
+| Tag | `ep05-v5.0`, anotada (03/11/2026 22:02:14 -0300, Carlos Eugenio), aponta para `2ce3ffa`; presente também em `origin` (`git ls-remote --tags`) |
+| Working tree antes da auditoria | Limpo (`git status --short` sem saída) |
+| `ea9f2bc` | 03/11/2026 21:01:04 — 14 arquivos: `messages.json`, `UX_UI_Especificacao_Minima.md`, `QA_US09_Estrategia_Evidencia_EP05.md`, `app.version` (4.5) e a base documental v4.5 |
+| `353b898` | 03/11/2026 21:27:31 — 23 arquivos: scaffold `app/` e primeira fatia Must |
+| `2ce3ffa` | 03/11/2026 22:02:05 — 10 arquivos: esta consolidação e `app.version` 4.5 → 5.0 |
+| Integridade | `messages.json` sem alterações desde `ea9f2bc`; `app/` sem alterações desde `353b898` (`git diff --stat`) |
+
+### 12.2 Verificações reexecutadas nesta auditoria
+
+Ambiente: Linux 7.0.0-42-generic, Node v24.13.0, npm 11.6.2, diretório `app/`. Sem `adb`, emulador ou `eas` disponíveis (`command -v`).
+
+| Comando | Código de retorno | Resultado |
+|---|---|---|
+| `npm run check:messages` | 0 | 17/17 PASS; 18 registros, 18 válidos, 0 rejeitados; `{ poetica: 6, mistica: 6, humoristica: 6 }`; mais longa `msg-009` (59). Mesmo aviso `MODULE_TYPELESS_PACKAGE_JSON` |
+| `npm run typecheck` | 0 | Sem erros |
+| `npx expo export --platform android --output-dir /tmp/oraculo-ep05-audit-export` | 0 | "Android Bundled … (634 modules)"; bundle Hermes de 1,6 MB fora do repositório; texto de `msg-013` e rótulo "Consultar" encontrados no bundle |
+| `npx expo install --check` | **1** | **Desatualizado:** `expo@58.0.23` (esperado `~58.0.25`) e `expo-status-bar@58.0.4` (esperado `~58.0.5`). Em 03/11 o resultado era "up to date". Nenhuma instalação foi feita |
+| `npx expo-doctor` | não executado | Ferramenta não instalada localmente; `npx` precisaria baixá-la |
+| `npm audit` | não executado | Depende de rede; resultado de 03/11 mantido como "relatado anteriormente" |
+
+Contagem independente (Node, leitura do JSON): IDs `msg-001`…`msg-018` sequenciais e únicos; `msg-009` e `msg-013` com 59 caracteres cada (as duas mais longas); `msg-001` é a mais curta (45). Busca em `app/src`: nenhuma ocorrência de `AsyncStorage`, `Share`, `captureRef`, `forwardRef` ou `ref=`; `app/eas.json` inexistente.
+
+Nenhum teste funcional, de interface, de compartilhamento, de persistência ou em Android foi executado nesta auditoria.
+
+### 12.3 Correções ao registro original
+
+| Trecho original | Situação em 12/11/2026 |
+|---|---|
+| Cabeçalho e §11.5: alterações "sem commit, sem tag e sem push" | Superado: versionadas em `2ce3ffa`, tag `ep05-v5.0`, ambos presentes no remoto |
+| §10.5: "Autorizar commit e tag `ep05-v5.0`" como decisão necessária | Realizada pelo responsável em 03/11/2026 (autor do commit e da tag) |
+| §6.1: `npx expo install --check` → "Dependencies are up to date" | Válido em 03/11; em 12/11 aponta patches mais novos (§12.2). Gatilho de reavaliação da RISK-015 |
+| `README.md`: `EP05_EXECUTION_REPORT.md` como "relatório e handoff editorial" | O handoff completo foi separado em `docs/EP05_EDITORIAL_HANDOFF.md`; a seção 10 deste relatório permanece como síntese original |
+
+### 12.4 Achados novos
+
+1. **Terminologia do histórico.** ADR-004 e DEC-008 falam em "últimas 10 mensagens"; US-09, DEC-023 e o QA definem a unidade como **evento de consulta** (o mesmo `messageId` pode repetir). Não há conflito de comportamento, porque DEC-023 é a interpretação operacional vigente. Os ADRs não foram alterados; o ponto deve ser lembrado ao implementar `historyService` (TASK-US09-02).
+2. **Natureza das decisões.** Só DEC-018 (mensagens) e DEC-025 (versão 5.0) têm aprovação humana registrada. DEC-019 a DEC-023 são decisões técnicas de agentes registradas como "Aprovada" pelo PMO, com aceite implícito pelo commit e pela tag do responsável, sem revisão item a item documentada. DEC-024 continua provisória. Quadro em `docs/DECISIONS.md`.
+3. **Status `done` sem execução.** Em `TASKS.md` §18.1, tarefas como TASK-US01-02 e TASK-US02-01 aparecem como `done` com dimensão "impl + estático". O registro foi mantido; a seção 18.2 reclassifica cada tarefa por estado explícito (DOCUMENTADO, IMPLEMENTADO, VERIFICADO ESTATICAMENTE, TESTADO EM RUNTIME, VALIDADO, PENDENTE). TASK-US09-03 passa a constar como estratégia documentada com execução pendente.
+4. **Histórico dos insumos do EP.04.** `TASKS.md`, `QA_CHECKLIST.md`, `IMPLEMENTATION_MAP.md` e `BACKLOG_REVIEW.md` entraram no Git pela primeira vez em `ea9f2bc` (03/11/2026). As datas de 25/08 e 27/08/2026 vêm de `DIARY.md` e não podem ser confirmadas pelo Git.
+5. **Dados do Storyteller ainda sem registro.** O texto dos prompts de Storyteller, UX/UI e QA e a identificação das quatro mensagens sinalizadas continuam fora do repositório.
+
+### 12.5 Estado das histórias Must após a auditoria
+
+| US | Estado explícito | Observação |
+|---|---|---|
+| US-01 | IMPLEMENTADO + VERIFICADO ESTATICAMENTE | Home nunca observada em execução |
+| US-02 | IMPLEMENTADO + VERIFICADO ESTATICAMENTE | Sorteio coberto pelo script; consulta na tela não observada |
+| US-04 | IMPLEMENTADO + VERIFICADO ESTATICAMENTE | Falha segura testada no nível da função, não na UI |
+| US-05 | Conteúdo aprovado pelo humano + VERIFICADO ESTATICAMENTE | Legibilidade no card PENDENTE |
+| US-06 | Parcialmente IMPLEMENTADO | Sem `ref` de captura |
+| US-07 | PENDENTE | Sem código |
+| US-09 | DOCUMENTADO (estratégia) | Sem código; 10 casos NOT RUN |
+| US-12 | Parcialmente IMPLEMENTADO (tokens provisórios) | Identidade não aprovada |
+| US-13 | PENDENTE | Sem `eas.json`, sem build |
+
+Nenhuma história atingiu TESTADO EM RUNTIME ou VALIDADO. US-09 continua Must; US-10 continua Should e não é pré-requisito da US-09. Should e Could não foram iniciadas.
+
+### 12.6 Papel deste relatório e do handoff editorial
+
+- **Este relatório:** registro operacional da execução (03/11/2026) e da auditoria (12/11/2026) — estado técnico, evidências, decisões, riscos e pendências.
+- **`docs/EP05_EDITORIAL_HANDOFF.md`:** insumo autossuficiente para escrever o capítulo 5 — narrativa, linha do tempo, matriz de evidências e afirmações proibidas.
+
+### 12.7 Arquivos alterados nesta auditoria
+
+`docs/EP05_EXECUTION_REPORT.md` (esta seção e nota no cabeçalho), `docs/EP05_EDITORIAL_HANDOFF.md` (novo), `docs/TASKS.md` (§18.2 e status da TASK-US09-03), `docs/DECISIONS.md` (quadro de origem das decisões), `docs/RISKS.md` (RISK-015, RISK-016 e registro da revisão), `docs/DIARY.md` (entrada de 12/11/2026 e notas de contexto), `docs/QA_CHECKLIST.md` (nota na seção 13 e contexto da seção 12), `docs/ARCHITECTURE.md` e `docs/IMPLEMENTATION_MAP.md` (notas de contexto histórico), `docs/BACKLOG.md` §9 e `docs/PROJECT_CONTEXT.md` §17–18 (contextualização mínima), `README.md` (auditoria, novo documento e verificação). `app.version` permanece 5.0. Sem commit, tag ou push nesta auditoria.

@@ -897,3 +897,24 @@ Aprovada.
 | DEC-025 | Versão documental 5.0 separada da versão técnica | Aprovada |
 
 Nenhum ADR novo foi criado no EP.05: as decisões acima cabem nos ADR-001 a ADR-005 e não alteram arquitetura, escopo ou estratégia de validação.
+
+---
+
+# Auditoria de 12/11/2026 — origem e natureza das decisões do EP.05
+
+Nenhuma decisão nova foi criada e nenhum status acima foi alterado. O quadro apenas separa **quem decidiu** e **que evidência existe**, porque "Aprovada" na legenda acima significa "válida para o escopo atual", não necessariamente "aprovada pelo responsável humano".
+
+| ID | Origem | Natureza da aprovação | Evidência disponível |
+|---|---|---|---|
+| DEC-018 | Responsável pelo produto, sobre proposta do Storyteller | **Aprovação humana explícita** (03/11/2026) | Registro do PMO nesta decisão, em `DIARY.md` e no relatório do EP.05; a conversa de aprovação não está versionada |
+| DEC-019 | Frontend Mobile Agent (execução no Cursor) | Decisão técnica do agente, registrada pelo PMO | Commit `353b898`; `expo-doctor` e `npm audit` relatados em 03/11. Aceite humano implícito pelo commit e pela tag, sem revisão item a item registrada |
+| DEC-020 | Frontend Mobile Agent | Decisão técnica do agente, coerente com `ARCHITECTURE.md` §4 | `App.tsx` monta `HomeScreen`; sem Expo Router nas dependências |
+| DEC-021 | Frontend Mobile Agent | Técnica; **política de IDs duplicados provisória** | `validateMessage.ts`; checagem "id duplicado" PASS |
+| DEC-022 | Frontend Mobile Agent | Decisão técnica do agente | `react-native-safe-area-context ~5.11.1` em `package.json` |
+| DEC-023 | QA Agent | Método proposto pelo agente e adotado pelo PMO; o próprio QA pedia "registrar após aprovação" | `docs/QA_US09_Estrategia_Evidencia_EP05.md`; sem registro de aprovação humana específica |
+| DEC-024 | UX/UI Agent (proposta) + Frontend (aplicação) | **Provisória — sem aprovação humana** | `theme.ts` com comentário "pending human approval" |
+| DEC-025 | Responsável pelo produto, na consolidação | **Aprovação humana** | Commit `2ce3ffa` e tag anotada `ep05-v5.0`, ambos de autoria do responsável (03/11/2026) |
+
+**Ratificação recomendada (não é decisão):** o responsável confirma explicitamente DEC-019 a DEC-023, ou registra ressalvas, antes do EP.06. Continuam pendentes DEC-024 (identidade visual) e a política de IDs duplicados da DEC-021.
+
+**Terminologia do histórico:** DEC-008 e ADR-004 dizem "últimas 10 mensagens". A interpretação operacional vigente é a da DEC-023: dez **eventos de consulta**, com repetição de `messageId` permitida. Os textos de DEC-008 e ADR-004 foram preservados.

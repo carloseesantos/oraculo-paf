@@ -562,6 +562,8 @@ Automação E2E, testes de regressão amplos, US Should/Could, iOS (salvo intere
 
 **Próximo passo sugerido:** PMO detalha tarefas; Storyteller entrega JSON (US-05); Frontend implementa Must; QA executa seção 9 na primeira build Android.
 
+> Registro anterior ao EP.05. Tarefas, JSON e primeira fatia Must já existem; o estado atual está na seção 13 e a sequência do EP.06 em `docs/TASKS.md` §20.
+
 ---
 
 ## 13. Estado de execução — EP.05 (consolidação v5.0, 03/11/2026)
@@ -579,6 +581,8 @@ Os cenários acima continuam válidos e com os mesmos IDs. Esta seção registra
 | **Não implementado** | Sem código para testar | US-07 (compartilhamento), US-09 (histórico), US-13 (build EAS) |
 
 Verificações estáticas apoiam, mas não substituem, os cenários de runtime e de Android físico. Nenhum cenário da seção 3 foi marcado como aprovado em dispositivo.
+
+**Auditoria PMO (12/11/2026, Node v24.13.0):** `npm run check:messages` (17/17) e `npm run typecheck` (exit 0) foram reexecutados com sucesso, e o export Android voltou a gerar 634 módulos. `npx expo install --check` agora aponta patches do SDK 58 desatualizados (RISK-015). Isso não é teste funcional. Nenhum cenário mudou de NOT RUN e a seção 9 continua sem preenchimento.
 
 ---
 

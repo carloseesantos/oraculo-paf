@@ -516,6 +516,8 @@ Arquivos da seção 7.1 já criados: `App.tsx`, `app.json`, `package.json`, `dat
 
 Ainda não criados: `eas.json`, `types/history.types.ts`, `services/shareService.ts`, `services/historyService.ts`, `hooks/useHistory.ts`, `components/ShareButton.tsx`.
 
+**Auditoria PMO (12/11/2026):** inventário confirmado contra `git ls-files`. `app/` não mudou desde o commit `353b898`, e os seis arquivos acima continuam inexistentes. `MessageCard.tsx` ainda não tem a `ref` prevista na seção 7.1. As seções 10 e 12 são registros anteriores ao EP.05: as pendências de JSON, UX e método de evidência da US-09 que elas listam foram tratadas no EP.05.
+
 ### Bloqueios reais vs paralelizáveis
 
 | Bloqueia scaffold? | Item |

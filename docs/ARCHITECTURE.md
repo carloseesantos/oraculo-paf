@@ -584,6 +584,8 @@ Não criar ADR para detalhes triviais de implementação.
 
 ## 14.4 Próximo agente a executar
 
+> Registro histórico: esta sequência foi executada no EP.05 (03/11/2026). O estado atual está em `docs/TASKS.md` §18.1 e §18.2, e a sequência do EP.06 em `docs/TASKS.md` §20.
+
 Para o início da execução do EP.05:
 
 1. **Storyteller Agent** — gerar e curar o JSON inicial (≥5 mensagens válidas por tom).

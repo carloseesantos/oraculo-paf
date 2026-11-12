@@ -696,7 +696,9 @@ Possíveis evidências:
 **Dependências para escolher o método:** ADR-004, `docs/QA_CHECKLIST.md` e contrato de `historyService` (sem esperar o código existir). **Para executar e comprovar a persistência:** TASK-US09-02 implementada.
 **Critérios de pronto:**
 
-* [ ] Método de evidência definido antes do teste de US-09.
+**Status (auditoria 12/11/2026):** estratégia DOCUMENTADA em `docs/QA_US09_Estrategia_Evidencia_EP05.md` (DEC-023); execução PENDENTE — US09-QA01…QA10 NOT RUN, dependem de TASK-US09-02, ainda sem código.
+
+* [x] Método de evidência definido antes do teste de US-09 (DEC-023, 03/11/2026).
 * [ ] QA consegue validar FIFO.
 * [ ] QA consegue validar persistência após reabrir app.
 * [ ] Validação não transforma US-10 em Must.
@@ -1352,6 +1354,59 @@ Should/Could (US-03, US-08, US-10, US-11) continuam fora da rodada e não foram 
 
 ---
 
+# 18.2 Reclassificação por estado explícito — auditoria PMO (12/11/2026)
+
+A seção 18.1 permanece como registro da consolidação. Nela, `done` significa que o código ou o documento existe e passou na verificação disponível. **Não significa execução no app nem validação.** Esta seção registra o mesmo inventário em estados explícitos, depois de conferir o repositório (HEAD `2ce3ffa`; `app/` sem alterações desde `353b898`) e reexecutar `check:messages` (17/17) e `typecheck` (exit 0).
+
+Estados, em ordem crescente de evidência:
+
+* **DOCUMENTADO** — especificação, decisão ou estratégia escrita;
+* **IMPLEMENTADO** — código ou conteúdo presente no repositório;
+* **VERIFICADO ESTATICAMENTE** — typecheck, script ou empacotamento, sem abrir o app;
+* **TESTADO EM RUNTIME** — observado com o app em execução (emulador, Expo Go ou build de desenvolvimento);
+* **VALIDADO** — aceito contra os critérios em Android físico (`QA_CHECKLIST.md`);
+* **PENDENTE** — sem artefato que atenda à tarefa.
+
+| Tarefa | Estado explícito | Falta para o próximo estado |
+|---|---|---|
+| TASK-SCAFFOLD-01 | IMPLEMENTADO + VERIFICADO ESTATICAMENTE | Abrir a Home em execução e registrar evidência |
+| TASK-US04-01 | DOCUMENTADO + IMPLEMENTADO + VERIFICADO ESTATICAMENTE | — (tipos; validação em runtime pertence a US-04) |
+| TASK-US04-02 | IMPLEMENTADO + VERIFICADO ESTATICAMENTE | — |
+| TASK-US04-03 | IMPLEMENTADO + VERIFICADO ESTATICAMENTE | Confirmação da política de IDs duplicados (DEC-021, provisória) |
+| TASK-US04-04 | IMPLEMENTADO + VERIFICADO ESTATICAMENTE | Consulta offline observada em runtime (US04-P04) |
+| TASK-US05-01 | IMPLEMENTADO + VERIFICADO ESTATICAMENTE | — |
+| TASK-US05-02 | Aprovação humana registrada (DEC-018) | — |
+| TASK-US05-03 | PENDENTE | Testar `msg-009`, `msg-013` e `msg-001` no card, com fonte ampliada |
+| TASK-US01-01 | DOCUMENTADO | Aprovação humana da especificação |
+| TASK-US01-02 | IMPLEMENTADO + VERIFICADO ESTATICAMENTE | US01-P01…P03 e UX01 em runtime |
+| TASK-US01-03 | DOCUMENTADO | Execução dos cenários |
+| TASK-US02-01 | IMPLEMENTADO + VERIFICADO ESTATICAMENTE | Consulta observada em runtime |
+| TASK-US02-02 | IMPLEMENTADO + VERIFICADO ESTATICAMENTE | — (3 checagens de sorteio PASS) |
+| TASK-US02-03 | IMPLEMENTADO (parcial) | Proteção contra reentrância quando o histórico assíncrono existir; US02-N01 |
+| TASK-US06-01 | DOCUMENTADO | Aprovação humana |
+| TASK-US06-02 | IMPLEMENTADO (parcial) + VERIFICADO ESTATICAMENTE | `ref` de captura; observação em runtime |
+| TASK-US06-03 | PENDENTE | Card com mensagens reais em Android |
+| TASK-US07-01 | DOCUMENTADO | — (ADR-005) |
+| TASK-US07-02 | PENDENTE | `shareService`, `ShareButton`, dependências de share e captura |
+| TASK-US07-03 | PENDENTE | TASK-US07-02 e Android físico |
+| TASK-US09-01 | DOCUMENTADO | Instalar AsyncStorage ao implementar TASK-US09-02 |
+| TASK-US09-02 | PENDENTE | `history.types.ts`, `historyService.ts`, serialização das gravações |
+| TASK-US09-03 | DOCUMENTADO (estratégia definida) — **execução PENDENTE** | Executar US09-QA01…QA10 depois de TASK-US09-02 |
+| TASK-US12-01 | DOCUMENTADO | Aprovação humana da identidade (DEC-024) |
+| TASK-US12-02 | IMPLEMENTADO + VERIFICADO ESTATICAMENTE (tokens provisórios) | Aprovação de TASK-US12-01; observação em tela |
+| TASK-US12-03 | PENDENTE | Legibilidade e contraste em Android real |
+| TASK-US13-01 | PENDENTE | Dependências de share/histórico; app observado; configuração de build |
+| TASK-US13-02 | PENDENTE | `eas.json` e build |
+| TASK-US13-03 | PENDENTE | Build instalada; `QA_CHECKLIST.md` §9 |
+
+Nenhuma tarefa atingiu TESTADO EM RUNTIME ou VALIDADO.
+
+**Dependências críticas confirmadas:** TASK-US07-03 depende de TASK-US07-02 e de um Android físico; TASK-US09-03 (execução) depende de TASK-US09-02; TASK-US13-03 depende de US-07, US-09 e TASK-US13-02; TASK-US05-03, TASK-US06-03 e TASK-US12-03 dependem da primeira execução observada.
+
+**Observação de dependências (12/11/2026):** `npx expo install --check` passou a indicar `expo ~58.0.25` e `expo-status-bar ~58.0.5` (instalados: 58.0.23 e 58.0.4). Nada foi instalado. Avaliar o alinhamento antes da primeira execução observada (RISK-015).
+
+---
+
 # 19. Resumo executivo
 
 O planejamento técnico necessário para **iniciar o scaffold Expo** está concluído: arquitetura, ADRs, tarefas, checklist QA e mapa de implementação já existem.
@@ -1378,6 +1433,7 @@ JSON local → Consultar → Card → Compartilhar → Histórico local → Buil
 
 # 20. Sequência técnica mínima recomendada para o EP.06
 
+0. **Alinhamento de patches do SDK 58 (com autorização humana)** — avaliar a atualização apontada por `npx expo install --check` em 12/11/2026 e reexecutar typecheck, `check:messages` e `expo-doctor`. Não rebaixar o SDK (DEC-019).
 1. **Primeira execução observada** — abrir a Home em emulador, Expo Go (se compatível com SDK 58) ou build de desenvolvimento; executar US01-P01…P03 e US02-P01…P03 (inclui modo avião) e registrar evidência. Fecha TASK-SCAFFOLD-01.
 2. **Spike de compartilhamento (US-07)** — `ref` no `MessageCard`, `shareService` + `ShareButton` fora da área capturável, dependências instaladas via `npx expo install`; validar cedo em Android físico com fallback em texto.
 3. **Histórico (US-09)** — `history.types.ts`, `historyService.ts`, integração na consulta com serialização de gravações; executar US09-QA01…QA10 conforme `docs/QA_US09_Estrategia_Evidencia_EP05.md`.

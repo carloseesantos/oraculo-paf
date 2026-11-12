@@ -71,7 +71,9 @@ O contrato de dados, as responsabilidades dos services/hooks e as dependências 
 
 - **Episódio:** EP.05 — Do backlog à execução: colocando nosso time de agentes IA para trabalhar.
 - **Data de consolidação:** 03/11/2026 (versão de entrada 4.5).
-- **Relatório completo:** `docs/EP05_EXECUTION_REPORT.md`.
+- **Relatório completo:** `docs/EP05_EXECUTION_REPORT.md` (commit `2ce3ffa`, tag `ep05-v5.0`).
+- **Auditoria pós-consolidação:** 12/11/2026 — seção 12 do relatório; estados explícitos por tarefa em `docs/TASKS.md` §18.2.
+- **Handoff editorial do capítulo 5:** `docs/EP05_EDITORIAL_HANDOFF.md`.
 
 ### Stack efetivamente utilizada
 
@@ -102,6 +104,8 @@ Expo SDK 58 (`expo@58.0.23`), React Native 0.88.1, React 19.3.0, TypeScript 6.0.
 
 Reproduzidas na consolidação, a partir de `app/`: `npm run typecheck` (exit 0), `npm run check:messages` (17/17), `npx expo-doctor` (20/20), `npx expo install --check` (dependências atualizadas) e export do bundle Android (634 módulos). O Frontend também relatou o Metro servindo o bundle de desenvolvimento (HTTP 200). Tudo isso é verificação estática ou de empacotamento.
 
+Na auditoria de 12/11/2026 (Node v24.13.0), `typecheck`, `check:messages` (17/17) e o export Android (634 módulos) foram reproduzidos. `npx expo install --check` passou a apontar patches mais novos (`expo ~58.0.25`, `expo-status-bar ~58.0.5`); nada foi instalado (RISK-015).
+
 ### Testes ainda pendentes
 
 Primeira execução do app (emulador, Expo Go ou build de desenvolvimento); cenários de UI de US-01, US-02, US-05, US-06 e US-12; casos US09-QA01…QA10; compartilhamento em Android físico; acessibilidade com fonte ampliada; seção 9 (go/no-go) do `docs/QA_CHECKLIST.md`.
@@ -120,7 +124,7 @@ Primeira execução do app (emulador, Expo Go ou build de desenvolvimento); cen�
 1. Abrir o app e executar os cenários iniciais de US-01 e US-02, com registro de evidência.
 2. Spike de compartilhamento (US-07) em Android físico, com fallback em texto.
 3. Histórico local (US-09) e execução dos 10 casos de QA.
-4. Decisões humanas: identidade visual e política de IDs duplicados.
+4. Decisões humanas: identidade visual, política de IDs duplicados, ratificação de DEC-019 a DEC-023 e alinhamento dos patches do SDK 58.
 5. `eas.json`, build interna e checklist go/no-go (US-13).
 
 ---
@@ -146,6 +150,7 @@ oraculo-paf/
     RISKS.md
     DIARY.md
     EP05_EXECUTION_REPORT.md
+    EP05_EDITORIAL_HANDOFF.md
     adr/
       ADR-001-stack-expo-react-native.md
       ADR-002-json-local-no-mvp.md
@@ -215,7 +220,8 @@ npx expo start
 | `docs/DECISIONS.md` | Decisões aprovadas |
 | `docs/RISKS.md` | Riscos e mitigação |
 | `docs/DIARY.md` | Histórico real de execução e aprendizados |
-| `docs/EP05_EXECUTION_REPORT.md` | Relatório consolidado do EP.05 e handoff editorial |
+| `docs/EP05_EXECUTION_REPORT.md` | Relatório de execução do EP.05 (03/11/2026) e auditoria posterior (12/11/2026) |
+| `docs/EP05_EDITORIAL_HANDOFF.md` | Insumo autossuficiente para o capítulo 5: narrativa, linha do tempo e matriz de evidências |
 | `docs/adr/` | ADR-001 a ADR-005, já existentes e aprovados |
 | `app.version` | Versão do repositório e da série de episódios |
 

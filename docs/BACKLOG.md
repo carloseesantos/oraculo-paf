@@ -376,6 +376,9 @@ Nenhuma dessas ideias deve entrar na sprint do MVP sem revalidação explícita 
    - executar Storyteller Agent para gerar o JSON inicial de mensagens;
    - executar UX/UI Agent para definir Home e card mínimos;
    - iniciar scaffold com Frontend Mobile Agent.
+
+> Registro anterior ao EP.05. Os três passos foram executados em 03/11/2026 (ver `docs/EP05_EXECUTION_REPORT.md`). As prioridades MoSCoW acima continuam válidas; a próxima sequência está em `docs/TASKS.md` §20.
+
 ---
 
 ## Referência rápida do fluxo de valor

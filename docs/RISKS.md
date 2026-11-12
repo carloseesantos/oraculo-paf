@@ -554,6 +554,12 @@ Frontend Mobile Agent + DevOps / Build Agent.
 
 Ativo (monitorado).
 
+## Atualização — auditoria 12/11/2026
+
+O gatilho de reavaliação ocorreu. `npx expo install --check` retornou código 1 e passou a esperar `expo ~58.0.25` e `expo-status-bar ~58.0.5`; estão instalados `58.0.23` e `58.0.4`. Em 03/11 o resultado era "up to date". `npm audit` e `expo-doctor` não foram reexecutados: o primeiro depende de rede e o segundo não está instalado localmente. Nada foi instalado.
+
+Ação proposta, com autorização humana: avaliar a atualização de patch com `npx expo install --fix` antes da primeira execução observada. Depois, reexecutar typecheck, `check:messages`, `expo-doctor` e `npm audit`, sem rebaixar o SDK. A mesma divergência pode afetar a compatibilidade com o Expo Go (RISK-014).
+
 ---
 
 # RISK-016 — Implementação sem validação em runtime
@@ -583,6 +589,10 @@ Frontend Mobile Agent + QA Agent.
 ## Status
 
 Ativo.
+
+## Atualização — auditoria 12/11/2026
+
+Sem mudança. A auditoria reproduziu typecheck, `check:messages` e o export Android (634 módulos), mas o ambiente também não tem `adb`, emulador nem `eas`. A interface continua nunca observada em execução. O primeiro passo concreto continua sendo disponibilizar um aparelho ou emulador.
 
 ---
 
@@ -665,7 +675,7 @@ Ativo.
 | RISK-012 | Documentação virar burocracia              | Médio   | Média         | PMO                | Ativo  |
 | RISK-013 | JSON local inválido quebrar experiência | Médio | Média | Storyteller + Frontend + QA | Mitigado parcialmente |
 | RISK-014 | SDK 58 incompatível com Expo Go no Android | Médio | Média | Frontend + DevOps | Ativo |
-| RISK-015 | Vulnerabilidades moderadas no tooling Expo | Baixo | Baixa | Frontend + DevOps | Ativo (monitorado) |
+| RISK-015 | Vulnerabilidades moderadas no tooling Expo | Baixo | Baixa | Frontend + DevOps | Ativo (monitorado; patches do SDK 58 desatualizados em 12/11/2026) |
 | RISK-016 | Implementação sem validação em runtime | Alto | Média | Frontend + QA | Ativo |
 | RISK-017 | US-09 não implementada / reentrância assíncrona | Alto | Média | Frontend + QA | Ativo |
 | RISK-018 | Legibilidade e captura com fonte ampliada | Médio | Média | UX + Frontend + QA | Ativo |
@@ -694,3 +704,5 @@ A próxima revisão deve verificar se:
 **Revisão realizada no EP.05 (03/11/2026):** RISK-011 passou a Mitigado; RISK-005 e RISK-013 a Mitigado parcialmente; RISK-001, RISK-008 e RISK-009 receberam atualização sem mudança de status; RISK-014 a RISK-018 foram criados a partir dos problemas reais do scaffold.
 
 **Próxima revisão:** após a primeira execução observada do app (RISK-016), o spike de compartilhamento em Android (RISK-009, RISK-018) e a implementação do histórico (RISK-017).
+
+**Revisão de auditoria (12/11/2026):** RISK-015 e RISK-016 receberam atualização. RISK-001, RISK-009, RISK-014, RISK-017 e RISK-018 foram revisados sem mudança: o código de compartilhamento, captura, histórico e build continua ausente (busca em `app/src` e `app/eas.json` inexistente). Nenhum risco novo foi criado. Os riscos existentes cobrem compartilhamento, compatibilidade com o Expo, ausência de execução, histórico e concorrência de gravações, legibilidade e dependências.

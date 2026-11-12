@@ -504,6 +504,14 @@ Nenhuma decisão de produto ou técnica nova. `app.version` permanece 5.0.
 
 ---
 
+## 12/11/2026 — Primeira execução funcional no Android Emulator
+
+O ORÁCULO PAF v5.0 foi executado no emulador Android utilizando Expo Go SDK 58. A Home foi renderizada e o usuário realizou consultas, observando três mensagens diferentes exibidas corretamente no MessageCard.
+
+As capturas demonstram funcionamento inicial da interação Consultar → Mensagem → Card, com legibilidade adequada no dispositivo virtual utilizado.
+
+Permanecem pendentes os testes de acessibilidade, execução em dispositivo físico, compartilhamento, persistência local e build interna.
+
 # Status atual da jornada
 
 ✅ Problema definido
